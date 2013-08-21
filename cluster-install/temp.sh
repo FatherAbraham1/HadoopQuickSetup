@@ -1,30 +1,26 @@
-if [ -f /etc/edh/role.csv ]; then
-    	NODELIST="`cat /etc/edh/role.csv | sed 's/,.*//g'`"
-else
-	echo "ERROR: Can not found role configuration file /etc/edh/role.csv"
-	exit 1
-fi
 
 HOSTNAME=`hostname`
 
-cp -f  conf-template/hadoop/conf/core-site.xml.template  conf-template/hadoop/conf/core-site.xml
-cp -f  conf-template/hadoop/conf/hdfs-site.xml.template  conf-template/hadoop/conf/hdfs-site.xml
-cp -f  conf-template/hadoop/conf/mapred-site.xml.template  conf-template/hadoop/conf/mapred-site.xml
-cp -f  conf-template/hadoop/conf/yarn-site.xml.template  conf-template/hadoop/conf/yarn-site.xml
-cp -f  conf-template/hive/conf/hive-site.xml.template  conf-template/hive/conf/hive-site.xml
-cp -f  conf-template/hbase/conf/hbase-site.xml.template  conf-template/hbase/conf/hbase-site.xml
+rm -rf /etc/{hadoop,hive,hbase,zookeeper}/{conf,conf.edh}
+mkdir -p /etc/{hadoop,hive,hbase,zookeeper}/conf.edh
 
-sed -i "s|HOSTNAME|$HOSTNAME|g" conf-template/hadoop/conf/core-site.xml
-sed -i "s|HOSTNAME|$HOSTNAME|g" conf-template/hadoop/conf/hdfs-site.xml
-sed -i "s|HOSTNAME|$HOSTNAME|g" conf-template/hadoop/conf/mapred-site.xml
-sed -i "s|HOSTNAME|$HOSTNAME|g" conf-template/hadoop/conf/yarn-site.xml
-sed -i "s|HOSTNAME|$HOSTNAME|g" conf-template/hive/conf/hive-site.xml
-sed -i "s|HOSTNAME|$HOSTNAME|g" conf-template/hbase/conf/hbase-site.xml
+alternatives --install /etc/hadoop/conf hadoop-conf /etc/hadoop/conf.edh 50
+alternatives --set hadoop-conf /etc/hadoop/conf.edh
 
-for node in $NODELIST ;do
-	scp -q conf-template/hadoop/conf/* root@$node:/etc/hadoop/conf
-	scp -q conf-template/hbase/conf/* root@$node:/etc/hbase/conf
-	scp -q conf-template/hive/conf/* root@$node:/etc/hive/conf
-	scp -q conf-template/zookeeper/conf/* root@$node:/etc/zookeeper/conf
-done
+alternatives --install /etc/hive/conf hive-conf /etc/hive/conf.edh 50
+alternatives --set hive-conf /etc/hive/conf.edh
+
+alternatives --install /etc/hbase/conf hbase-conf /etc/hbase/conf.edh 50
+alternatives --set hbase-conf /etc/hbase/conf.edh
+
+alternatives --install /etc/zookeeper/conf zookeeper-conf /etc/zookeeper/conf.edh 50
+alternatives --set zookeeper-conf /etc/zookeeper/conf.edh
+
+touch /var/lib/hive/.hivehistory
+chown -R hive:hive  /var/lib/hive/.hivehistory
+
+cp -u conf-template/hadoop/conf/* /etc/hadoop/conf
+cp -u conf-template/hive/conf/* /etc/hive/conf
+cp -u conf-template/hbase/conf/* /etc/hbase/conf
+cp -u conf-template/zookeeper/conf/* /etc/zookeeper/conf
 

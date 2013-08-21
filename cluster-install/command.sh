@@ -7,6 +7,6 @@ fi
 
 for node in $NODELIST ;do
 	echo "$node----"
-	ssh -q -i  /etc/edh/edh-id_rsa root@$node $1 
+	ssh root@$node $1 
 done
 

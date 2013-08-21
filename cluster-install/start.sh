@@ -1,11 +1,15 @@
-service hadoop-hdfs-namenode $1
-service hadoop-hdfs-secondarynamenode $1
-service hadoop-yarn-resourcemanager $1
-service hadoop-mapreduce-historyserver $1
+if [ -f /etc/edh/role.csv ]; then
+    	NODELIST="`cat /etc/edh/role.csv | sed 's/,.*//g'`"
+else
+	echo "ERROR: Can not found role configuration file /etc/edh/role.csv"
+	exit 1
+fi
 
-for node in cdh2 cdh3 cdh4 ;do
+echo "[INFO]:service hadoop $1"
+
+for node in $NODELIST ;do
         ssh root@$node  "
-		for x in zookeeper-server hadoop-hdfs-datanode hadoop-yarn-nodemanager hbase-master hbase-regionserver hive-metastore hive-server2; do  service \$x $1 ; done
+		for x in hadoop-hdfs-namenode hadoop-hdfs-datanode hadoop-yarn-resourcemanager hadoop-yarn-nodemanager hbase-master hbase-regionserver hive-metastore hive-server2 zookeeper-server; do  service \$x $1 ; done
 	"
 done
 

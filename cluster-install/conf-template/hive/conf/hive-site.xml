@@ -28,7 +28,7 @@
 <!-- Hive Execution Parameters -->
 <property>
   	<name>javax.jdo.option.ConnectionURL</name>
-    	<value>jdbc:postgresql://HOSTNAME/metastore</value>
+    	<value>jdbc:postgresql://localhost/metastore</value>
 </property>
      
 <property>
@@ -61,13 +61,18 @@
 </property>
 
 <property>
+ 	<name>hive.files.umask.value</name>
+ 	<value>0002</value>
+</property>
+
+<property>
   	<name>hive.metastore.uris</name>
-    	<value>thrift://HOSTNAME:9083</value>
+    	<value>thrift://localhost:9083</value>
 </property>
 
 <property>
 	<name>yarn.resourcemanager.resource-tracker.address</name>
-	<value>HOSTNAME:8031</value>
+	<value>localhost:8031</value>
 </property>
 <property>
 	<name>hive.metastore.warehouse.dir</name>
@@ -77,5 +82,20 @@
 <property>    
 	<name>hive.metastore.cache.pinobjtypes</name>    
     	<value>Table,Database,Type,FieldSchema,Order</value>    
+</property>
+
+<property>
+        <name>hive.aux.jars.path</name>
+        <value>file:///usr/lib/hive/lib/zookeeper.jar,file:///usr/lib/hive/lib/hive-hbase-handler.jar,file:///usr/lib/hive/lib/hbase.jar</value>
+</property>
+
+<property>
+        <name>hive.metastore.execute.setugi</name>
+        <value>true</value>
+</property>
+
+<property>
+        <name>hive.metastore.authorization.storage.checks</name>
+        <value>true</value>
 </property>
 </configuration>
