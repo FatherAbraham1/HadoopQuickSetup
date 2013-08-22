@@ -5,45 +5,41 @@ hadoop-install
 ## Overview
 
 	.
-	├── all-in-one
-	│   ├── conf-template
-	│   ├── format.sh
-	│   ├── install.sh
-	│   ├── postgres-fedora19.sh
-	│   ├── postgresql-9.1-901.jdbc4.jar
-	│   ├── readme.txt
-	│   ├── start.sh
-	│   ├── temp.sh
-	│   └── uninstall.sh
 	├── cluster-install
+	│   ├── all-in-one-install.sh
+	│   ├── cluster-install.sh
 	│   ├── command.sh
 	│   ├── conf-template
 	│   ├── edh
 	│   ├── format.sh
-	│   ├── install
-	│   ├── install.sh
+	│   ├── patch
+	│   ├── postgres-fedora19.sh
+	│   ├── postgresql-9.1-901.jdbc4.jar
+	│   ├── readme.txt
+	│   ├── scripts
 	│   ├── start.sh
 	│   └── temp.sh
 	└── README.md
+	5 directories, 10 files
 
-* all-in-one: install hadoop in one node
-* cluster-install: install hadoop in a cluster
+
+* all-in-one-install.sh: install hadoop in one node
+* cluster-install.sh: install hadoop in a cluster
 
 ## How to use
 
-* all-in-one
+* all-in-one-install
 
-open install.sh and modify repo's baseurl:
+open all-in-one-install.sh and modify repo's baseurl:
 
-	echo "[cloudera-cdh4]" >/etc/yum.repos.d/cloudera-cdh4.repo
-	echo "name=cdh4" >>/etc/yum.repos.d/cloudera-cdh4.repo
-	echo "baseurl=ftp://192.168.56.101/pub/cdh/4.3.0/" >>/etc/yum.repos.d/cloudera-cdh4.repo
-	echo "gpgcheck = 0" >>/etc/yum.repos.d/cloudera-cdh4.repo
+	echo "[cloudera-cdh4]" >/etc/yum.repos.d/edh.repo
+	echo "name=cdh4" >>/etc/yum.repos.d/edh.repo
+	echo "baseurl=ftp://192.168.56.101/pub/cdh/4.3.0/" >>/etc/yum.repos.d/edh.repo
+	echo "gpgcheck = 0" >>/etc/yum.repos.d/edh.repo
 
 And then run this commands:
 
-	[root@node1 all-in-one]# sudo sh install.sh
-	[root@node1 all-in-one]# sudo sh postgres-fedora19.sh 
+	[root@node1 cluster-install]# sh all-in-one-install.sh
 
 Wait several seconds,run jps command and you will see:
 
@@ -59,6 +55,11 @@ Wait several seconds,run jps command and you will see:
 	30844 QuorumPeerMain
 	1810 SecondaryNameNode
 	30246 NodeManager
+
+* cluster-install
+Just run this comand:
+
+	[root@node1 cluster-install]# sh cluster-install.sh
 
 ## Change
 

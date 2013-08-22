@@ -3,11 +3,12 @@ if [ `id -u` -ne 0 ]; then
    exit 1
 fi
 
-mkdir -p /etc/edh
-cp -r edh/* /etc/edh/
-
 HOSTNAME=`hostname`
 PASSWORD='redhat'
+
+mkdir -p /etc/edh
+cp -r edh/* /etc/edh/
+echo $HOSTNAME >/etc/edh/role.csv 
 
 iptables -F
 
