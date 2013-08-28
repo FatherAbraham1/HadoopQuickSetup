@@ -1,0 +1,1 @@
+node1,hadoop-hdfs-namenode,hadoop-hdfs,hadoop-hdfs-datanodehadoop-hdfs,hadoop-libhdfs,hadoop-debuginfo,hadoop-httpfs,hadoop-yarn-resourcemanager,hadoop-yarn-nodemanager,hadoop-mapreduce-historyserver,zookeeper-server,hbase-master,hbase-regionserver,hbase-rest,hbase-thrift,hive-metastore,hive-server2,hive-jdbc

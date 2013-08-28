@@ -13,7 +13,7 @@ hadoop-install
 	│   ├── edh
 	│   ├── format.sh
 	│   ├── patch
-	│   ├── postgres-fedora19.sh
+	│   ├── install-postgres.sh
 	│   ├── postgresql-9.1-901.jdbc4.jar
 	│   ├── readme.txt
 	│   ├── scripts
