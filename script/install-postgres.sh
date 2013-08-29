@@ -48,7 +48,7 @@ configure_postgresql_conf(){
 	sed -e '/^shared_buffers\s*=/d' -i $CONF_FILE
 
 	local TMPFILE=$(mktemp /tmp/XXXXXXXX)
-	cat $CONF_FILE >> $TMPFILE
+	cat $CONF_FILE >> $TMPFILE >/dev/null
 	 
 	echo "Adding configs"
 	sed -i "1a port = $DB_PORT" $TMPFILE
@@ -60,7 +60,7 @@ configure_postgresql_conf(){
 	sed -i "5a $(get_standard_conforming_strings)" $TMPFILE
 	fi
 
-	cat $TMPFILE > $CONF_FILE
+	cat $TMPFILE > $CONF_FILE >/dev/null
 }
 
 enable_remote_connections(){
@@ -76,10 +76,6 @@ create_db(){
 	su -c "cd ; /usr/bin/psql --command \"create user $DB_USER with password '$DB_PASSWORD'; \" " postgres
 	su -c "cd ; /usr/bin/psql --command \"CREATE DATABASE $DB_NAME owner=$DB_USER;\" " postgres
 	su -c "cd ; /usr/bin/psql --command \"GRANT ALL privileges ON DATABASE $DB_NAME TO $DB_USER;\" " postgres
-
-	rm -rf /usr/lib/hive/lib/postgresql-jdbc.jar
-	#ln -s /usr/share/java/postgresql-jdbc.jar /usr/lib/hive/lib/postgresql-jdbc.jar
-	cp postgresql-9.1-901.jdbc4.jar /usr/lib/hive/lib/
 }
 
 init_hive_metastore(){

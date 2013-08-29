@@ -29,6 +29,7 @@ addline "LogLevel ERROR" /root/.ssh/config
 [ -f /usr/sbin/setenforce ] && SELINUX="selinux"
 service $FIREWALL stop >/dev/null 2>&1
 chkconfig $FIREWALL off > /dev/null 2>&1
+
 if [ $SELINUX == "selinux" ]; then
     sed -i "s/.*SELINUX=.*/SELINUX=disabled/g" /etc/selinux/config 
     setenforce 0  >/dev/null 2>&1

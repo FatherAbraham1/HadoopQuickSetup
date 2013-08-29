@@ -1,11 +1,13 @@
-if [ -f /etc/edh/role.csv ]; then
-    	NODELIST="`cat /etc/edh/role.csv | sed 's/,.*//g'`"
+
+NODES_FILE="/etc/edh/nodes.csv"
+if [ -f $NODES_FILE ]; then
+    	NODES_LIST="`cat $NODES_FILE`"
 else
-	echo "ERROR: Can not found role configuration file /etc/edh/role.csv"
+	echo "ERROR: Can not found role configuration file $NODES_FILE"
 	exit 1
 fi
 
-for node in $NODELIST ;do
+for node in $NODES_LIST ;do
 	echo "$node----"
 	ssh root@$node $1 
 done

@@ -5,17 +5,16 @@ fi
 
 echo "[INFO]:format hadoop cluster"
 
-if [ -f /etc/edh/role.csv ]; then
-    	NODELIST="`cat /etc/edh/role.csv | sed 's/,.*//g'`"
+NODES_FILE="/etc/edh/nodes.csv"
+if [ -f $NODES_FILE ]; then
+    	NODES_LIST="`cat $NODES_FILE`"
 else
-	echo "ERROR: Can not found role configuration file /etc/edh/role.csv"
+	echo "ERROR: Can not found role configuration file $NODES_FILE"
 	exit 1
 fi
 
-sh start.sh stop
-
 myid=0
-for server in $NODELIST ;do
+for server in $NODES_LIST ;do
 	myid=`expr $myid + 1`
 
 	echo "[INFO]:remove hdfs local dir in $server"
@@ -39,17 +38,15 @@ service hadoop-hdfs-namenode start
 
 echo "[INFO]:hadoop fs: mkdir chmod chown"
 
+su -s /bin/bash hdfs -c 'hadoop fs -chmod 755 /'
 while read dir user group perm
 do
    su -s /bin/bash hdfs -c "hadoop fs -mkdir $dir && hadoop fs -chmod $perm $dir && hadoop fs -chown $user:$group $dir"
      echo "[INFO]: ."
 done << EOF
-/ hdfs hadoop 755
 /hbase hbase hadoop 755
 /tmp hdfs hadoop 1777 
-/tmp/hadoop-yarn mapred mapred 777
-/var/log/hadoop-yarn/apps yarn mapred 1777
-/yarn/apps yarn hadoop 1777
+/tmp/logs yarn hadoop 1777
 /user hdfs hadoop 777
 /user/root root hadoop 755
 /user/hive hive hadoop 775
