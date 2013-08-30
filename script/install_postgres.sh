@@ -49,7 +49,7 @@ configure_postgresql_conf(){
 	sed -e '/^shared_buffers\s*=/d' -i $CONF_FILE
 
 	local TMPFILE=$(mktemp /tmp/XXXXXXXX)
-	cat $CONF_FILE >> $TMPFILE >/dev/null 2>&1
+	cat $CONF_FILE >> $TMPFILE
 	 
 	echo "Adding configs"
 	sed -i "1a port = $DB_PORT" $TMPFILE
@@ -61,7 +61,7 @@ configure_postgresql_conf(){
 		sed -i "5a $(get_standard_conforming_strings)" $TMPFILE
 	fi
 
-	cat $TMPFILE > $CONF_FILE >/dev/null 2>&1
+	cat $TMPFILE > $CONF_FILE
 }
 
 enable_remote_connections(){
