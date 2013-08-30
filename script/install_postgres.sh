@@ -5,7 +5,8 @@ if [ `id -u` -ne 0 ]; then
    exit 1
 fi
 
-echo "[INFO]:install postgres"
+
+echo -e "\n[INFO]:Install postgresql for hive-metastore"
 
 get_postgresql_major_version()
 {
@@ -44,11 +45,11 @@ configure_postgresql_conf(){
 	sed -e '/^port\s*=/d' -i $CONF_FILE
 	sed -e '/^listen_addresses\s*=/d' -i $CONF_FILE
 	sed -e '/^max_connections\s*=/d' -i $CONF_FILE
-	sed -e '/^standard_conforming_strings\s*=/d' $CONF_FILE
+	sed -e '/^standard_conforming_strings\s*=/d' -i $CONF_FILE
 	sed -e '/^shared_buffers\s*=/d' -i $CONF_FILE
 
 	local TMPFILE=$(mktemp /tmp/XXXXXXXX)
-	cat $CONF_FILE >> $TMPFILE >/dev/null
+	cat $CONF_FILE >> $TMPFILE >/dev/null 2>&1
 	 
 	echo "Adding configs"
 	sed -i "1a port = $DB_PORT" $TMPFILE
@@ -57,10 +58,10 @@ configure_postgresql_conf(){
 	sed -i "4a shared_buffers = 256MB" $TMPFILE
 	local SCS="$(get_standard_conforming_strings)"
 	if [ "$SCS" != "" ]; then
-	sed -i "5a $(get_standard_conforming_strings)" $TMPFILE
+		sed -i "5a $(get_standard_conforming_strings)" $TMPFILE
 	fi
 
-	cat $TMPFILE > $CONF_FILE >/dev/null
+	cat $TMPFILE > $CONF_FILE >/dev/null 2>&1
 }
 
 enable_remote_connections(){

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-umask 022
+echo -e "[INFO]:Config system env"
 
 function addline {
     line=$1
@@ -18,11 +18,13 @@ if [ ! -d /root/.ssh ]; then
 fi
 
 #ssh config
+echo -e "Add ssh config ..."
 addline "StrictHostKeyChecking no" /root/.ssh/config
 addline "UserKnownHostsFile /dev/null" /root/.ssh/config
 addline "LogLevel ERROR" /root/.ssh/config
 
 # stop firewalls
+echo -e "Stop firewalls ..."
 [ -f /etc/init.d/iptables ] && FIREWALL="iptables"
 [ -f /etc/init.d/SuSEfirewall2_setup ] && FIREWALL="SuSEfirewall2_setup"
 [ -f /etc/init.d/boot.apparmor ] && SELINUX="boot.apparmor"
@@ -39,6 +41,7 @@ elif [ $SELINUX == "boot.apparmor" ]; then
 fi
 
 #set global file limit
+echo -e "Global file limit ..."
 rst=`grep "^fs.file-max" /etc/sysctl.conf`
 if [ "x$rst" = "x" ]
 then

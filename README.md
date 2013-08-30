@@ -5,22 +5,16 @@ hadoop-install
 ## Overview
 
 	.
-	├── cluster-install
-	│   ├── all-in-one-install.sh
-	│   ├── cluster-install.sh
-	│   ├── command.sh
-	│   ├── conf-template
-	│   ├── edh
-	│   ├── format.sh
-	│   ├── patch
-	│   ├── install-postgres.sh
-	│   ├── postgresql-9.1-901.jdbc4.jar
-	│   ├── readme.txt
-	│   ├── scripts
-	│   ├── start.sh
-	│   └── temp.sh
-	└── README.md
-	5 directories, 10 files
+	├── all-in-one-install.sh
+	├── cluster-install.sh
+	├── command.sh
+	├── edh
+	├── patch
+	├── README.md
+	├── script
+	└── uninstall.sh
+
+	3 directories, 5 files
 
 
 * all-in-one-install.sh: install hadoop in one node
@@ -30,14 +24,7 @@ hadoop-install
 
 * all-in-one-install
 
-open all-in-one-install.sh and modify repo's baseurl:
-
-	echo "[cloudera-cdh4]" >/etc/yum.repos.d/edh.repo
-	echo "name=cdh4" >>/etc/yum.repos.d/edh.repo
-	echo "baseurl=ftp://192.168.56.101/pub/cdh/4.3.0/" >>/etc/yum.repos.d/edh.repo
-	echo "gpgcheck = 0" >>/etc/yum.repos.d/edh.repo
-
-And then run this commands:
+Run this commands:
 
 	[root@node1 cluster-install]# sh all-in-one-install.sh
 

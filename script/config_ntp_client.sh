@@ -18,21 +18,21 @@ execmsg=`yum -y -q install ntp 2>&1`
 export config_log='node-config.log'
 
 
-echo "[INFO]: Synchronize time and timezone" | tee -a $config_log
-echo "[INFO]: Waiting for [`hostname`] update time to [$MANAGER_LIST]..." | tee -a $config_log
-echo "[INFO]: Installing ntp" | tee -a $config_log
+echo "Synchronize time and timezone ..." | tee -a $config_log
+echo "Waiting for [`hostname`] update time to [$MANAGER_LIST]..." | tee -a $config_log
+echo "Installing ntp ..." | tee -a $config_log
 
 if [[ $? -ne 0 ]]; then
 	echo "[ERROR]: $execmsg" | tee -a $config_log
 else
-	echo "[INFO]: Finish Installing ntp" | tee -a $config_log
+	echo "Finish Installing ntp ..." | tee -a $config_log
 fi
 
 if service ntpd status >/dev/null 2>&1; then
 	service ntpd stop
 fi
 
-echo "[INFO]: Synchronizing time with ntp server..." | tee -a $config_log
+echo "Synchronizing time with ntp server ..." | tee -a $config_log
 waiting_time=9
 while ! ntpdate $MANAGER_LIST  >> $config_log 2>&1
 do
@@ -43,7 +43,7 @@ do
 
 	mod=`expr $waiting_time % 3`
 	if [[ $mod -eq 0 ]]; then
-	    echo "[INFO]: ." | tee -a $config_log
+	    echo "." | tee -a $config_log
 	fi
 
 	sleep 1
@@ -52,9 +52,10 @@ done
 
 for x in 1 2 3 4 5
 do
-	echo -n "[INFO]: " | tee -a $config_log
+	echo -n "" | tee -a $config_log
 	ntpdate $MANAGER_LIST | tee -a $config_log
 	sleep 1
 done
 # write system clock to hardware clock.
 hwclock --systohc
+echo "Config ntp finish ..." | tee -a $config_log

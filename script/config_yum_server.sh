@@ -1,15 +1,13 @@
 #!/bin/sh
 
 if [ $# != 1 ]; then
-	echo "USAGE: 
-	./config_yum_server.sh selected_ip"
-	exit 1
+	echo -e "USAGE:\n\t./config_yum_server.sh selected_ip";	exit 1
 fi
 
-umask 022
 SCRIPT_DIR=`dirname $0`
-
 server_ip=$1
+
+echo -e "[INFO]:Config yum for manager"
 
 function backup_repo {
 	cd /etc/yum.repos.d
@@ -23,7 +21,7 @@ function backup_repo {
 }
 
 function clean_repo_file {
-	echo -e "\nAs recommended, the repo files in /etc/yum.repos.d need to be removed."
+	echo -e "As recommended, the repo files in /etc/yum.repos.d need to be removed."
 	echo "Please make sure these files are correct if you want to keep them."
 
 	flag="undef"
