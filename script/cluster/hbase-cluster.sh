@@ -5,10 +5,8 @@ if [ $# -lt 1 ]; then
   exit 1
 fi
 
-export PDSH_SSH_ARGS_APPEND="-i /etc/intelcloud/idh-id_rsa"
-
-TOPDIR=/usr/lib/intelcloud/scripts/hbase
-CONFDIR=/etc/intelcloud/conf
+TOPDIR=/etc/edh/scripts/hbase
+CONFDIR=/etc/edh/conf
 HBASE_HOME=/usr/lib/hbase
 
 action=$1

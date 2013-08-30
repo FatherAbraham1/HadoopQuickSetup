@@ -7,8 +7,8 @@ fi
 
 export PDSH_SSH_ARGS_APPEND="-i /etc/intelcloud/idh-id_rsa"
 
-TOPDIR=/usr/lib/intelcloud/scripts/oozie
-CONFDIR=/etc/intelcloud/conf
+TOPDIR=/etc/edh/scripts/oozie
+CONFDIR=/etc/edh/conf
 
 action=$1
 

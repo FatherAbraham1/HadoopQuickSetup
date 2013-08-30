@@ -7,8 +7,8 @@ fi
 
 export PDSH_SSH_ARGS_APPEND="-i /etc/intelcloud/idh-id_rsa"
 
-TOPDIR=/usr/lib/intelcloud/scripts/hive
-CONFDIR=/etc/intelcloud/conf
+TOPDIR=/etc/edh/scripts/hive
+CONFDIR=/etc/edh/conf
 
 action=$1
 
