@@ -1,17 +1,6 @@
 #!/bin/sh
 
-MANAGER_LIST=`cat /etc/edh/manager.csv`
-NODES_FILE="/etc/edh/nodes.csv"
-if [ -f $NODES_FILE ]; then
-    	NODES_LIST="`cat $NODES_FILE`"
-else
-	echo "ERROR: Can not found role configuration file $NODES_FILE"
-	exit 1
-fi
-
-if [ $MANAGER_LIST == $NODES_LIST ]; then
-	exit 1
-fi
+MANAGER_LIST="MANAGER_HOSTNAME"
 
 script_dir=`dirname $0`
 execmsg=`yum -y -q install ntp 2>&1`

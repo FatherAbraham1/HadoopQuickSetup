@@ -37,16 +37,16 @@ function clean_repo_file {
 
 function select_repo {
 	REPO=$1
-	echo -e "\nA $REPO yum repository is needed for Intel Hadoop Installation and cluster management."
+	echo -e "\nA $REPO yum repository is needed for Hadoop Installation."
 	flag="undef"
 	while [ "$flag" != "y" -a "$flag" != "n" ]
 	do
 		read -p "Create or no...[y|n]: " flag
 		if [ "$flag" == "n" ]; then
-			exit 1
+			return 0
 		fi
 		if [ "$flag" == "y" ]; then
-			read -p "Please input URL of the existing $REPO repository: " repourl
+			read -p "Please input URL for $REPO: " repourl
 			echo -e "[$REPO]\nname = $REPO packages\nbaseurl = $repourl\nproxy = _none_\ngpgcheck = 0" > /etc/yum.repos.d/$REPO.repo
 			yum clean all > /dev/null 2>&1
 			if ! yum install vsftpd -q -y; then

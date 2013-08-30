@@ -4,24 +4,21 @@ if [ `id -u` -ne 0 ]; then
    echo "[ERROR]:Must run as root";  exit 1
 fi
 
-echo "[INFO]:Format hadoop cluster"
-
-if ! service hadoop-hdfs-namenode status >/dev/null 2>&1; then
-	service hadoop-hdfs-namenode start
-fi
+echo -e "\n[INFO]:Format hadoop cluster"
 
 #ps -ef|grep zookeeper|grep QuorumPeerMain|awk '{print $2}'|xargs kill -9
 
-echo "Format namenode ..."
-su -s /bin/bash hdfs -c 'yes Y | hadoop namenode -format >> /tmp/nn.format.log 2>&1'
-sleep 3
+service hadoop-hdfs-namenode start
+sleep 10
 
-echo "Create hdfs file ..."
+su -s /bin/bash hdfs -c 'yes Y | hadoop namenode -format >> /tmp/nn.format.log 2>&1'
+
+echo "Create hdfs dir ..."
 su -s /bin/bash hdfs -c 'hadoop fs -chmod 755 /'
 while read dir user group perm
 do
-   su -s /bin/bash hdfs -c "hadoop fs -mkdir $dir && hadoop fs -chmod $perm $dir && hadoop fs -chown $user:$group $dir"
-     echo "[INFO]:."
+   	su -s /bin/bash hdfs -c "hadoop fs -mkdir $dir && hadoop fs -chmod $perm $dir && hadoop fs -chown $user:$group $dir"
+    	echo "[INFO]:mkdir $dir ."
 done << EOF
 /hbase hbase hadoop 755
 /tmp hdfs hadoop 1777 

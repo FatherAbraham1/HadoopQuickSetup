@@ -5,6 +5,8 @@ if [ `id -u` -ne 0 ]; then
 fi
 
 cd script
+
+sh init.sh
 sh config_manager.sh
 
 if [ "$?" != "0" ]; then
@@ -23,7 +25,7 @@ sh format_namenode.sh
 sh start.sh start
 
 cd ../patch
-sh patch1.sh
+sh add_patchs.sh
 
 if [ $? == 1 ]; then 
 	exit 1
