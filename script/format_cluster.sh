@@ -4,7 +4,9 @@ if [ `id -u` -ne 0 ]; then
    echo "[ERROR]:Must run as root";   exit 1
 fi
 
-NODES_FILE="/etc/edh/nodes.csv"
+
+CONFIG_PATH=/etc/edh
+NODES_FILE=$CONFIG_PATH/nodes.csv
 
 echo "ReCreate local dir in namenode ..."
 rm -rf /hadoop/dfs

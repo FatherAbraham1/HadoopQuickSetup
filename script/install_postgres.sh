@@ -36,37 +36,30 @@ check_postgresql_installed(){
 
 	service postgresql stop
 	pkill -9 postgres
-	rm -rf /var/lib/pgsql/data
-	rm -rf /var/run/postgresql/.s.PGSQL.5432
+	rm -rf /var/lib/pgsql/data /var/run/postgresql/.s.PGSQL.5432
 	service postgresql initdb
 }
 
 configure_postgresql_conf(){
-	sed -e '/^port\s*=/d' -i $CONF_FILE
-	sed -e '/^listen_addresses\s*=/d' -i $CONF_FILE
-	sed -e '/^max_connections\s*=/d' -i $CONF_FILE
-	sed -e '/^standard_conforming_strings\s*=/d' -i $CONF_FILE
-	sed -e '/^shared_buffers\s*=/d' -i $CONF_FILE
-
-	local TMPFILE=$(mktemp /tmp/XXXXXXXX)
-	cat $CONF_FILE >> $TMPFILE
-	 
-	echo "Adding configs"
-	sed -i "1a port = $DB_PORT" $TMPFILE
-	sed -i "2a listen_addresses = '*'" $TMPFILE
-	sed -i "3a max_connections = 600" $TMPFILE
-	sed -i "4a shared_buffers = 256MB" $TMPFILE
-	local SCS="$(get_standard_conforming_strings)"
+	#sed -e '/^port\s*=/d' -i $CONF_FILE
+	#sed -e '/^listen_addresses\s*=/d' -i $CONF_FILE
+	#sed -e '/^max_connections\s*=/d' -i $CONF_FILE
+	#sed -e '/^shared_buffers\s*=/d' -i $CONF_FILE
+	sed -i "s/#port = 5432/port = $DB_PORT/" $CONF_FILE
+	sed -i "s/max_connections = 100/max_connections = 600/" $CONF_FILE
+	sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/" $CONF_FILE
+	sed -i "s/shared_buffers = 32MB/shared_buffers = 256MB/" $CONF_FILE
+	
+	local SCS=$(get_standard_conforming_strings)
 	if [ "$SCS" != "" ]; then
-		sed -i "5a $(get_standard_conforming_strings)" $TMPFILE
+		echo $SCS
+		sed -i "s/#standard_conforming_strings = on/standard_conforming_strings = off/" $CONF_FILE
 	fi
-
-	cat $TMPFILE > $CONF_FILE
 }
 
 enable_remote_connections(){
-	echo "local    all             all             		               trust" > /var/lib/pgsql/data/pg_hba.conf
-	echo "host     all             all             0.0.0.0/0	       trust" >> /var/lib/pgsql/data/pg_hba.conf
+	sed -i "s/127.0.0.1\/32/0.0.0.0\/0/" /var/lib/pgsql/data/pg_hba.conf
+	sed -i "s/ident/trust/" /var/lib/pgsql/data/pg_hba.conf
 }
 
 create_db(){
@@ -74,7 +67,7 @@ create_db(){
 	DB_USER=$2
 	DB_PASSWORD=$3
 	su -c "cd ; /usr/bin/pg_ctl start -w -m fast -D /var/lib/pgsql/data" postgres
-	su -c "cd ; /usr/bin/psql --command \"create user $DB_USER with password '$DB_PASSWORD'; \" " postgres
+	su -c "cd ; /usr/bin/psql --command \"CREATE USER $DB_USER WITH PASSWORD '$DB_PASSWORD'; \" " postgres
 	su -c "cd ; /usr/bin/psql --command \"CREATE DATABASE $DB_NAME owner=$DB_USER;\" " postgres
 	su -c "cd ; /usr/bin/psql --command \"GRANT ALL privileges ON DATABASE $DB_NAME TO $DB_USER;\" " postgres
 }

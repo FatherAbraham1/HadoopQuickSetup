@@ -23,12 +23,8 @@
     <value>3</value>
   </property>
   <property>
-    <name>dfs.blocksize</name>
+    <name>dfs.block.size</name>
     <value>134217728</value>
-  </property>
-  <property>
-    <name>dfs.client.use.datanode.localhost</name>
-    <value>false</value>
   </property>
   <property>
     <name>fs.permissions.umask-mode</name>

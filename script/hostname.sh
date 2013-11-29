@@ -1,5 +1,5 @@
 if [ "$1" == "" ];then
-	echo "./hostnameresolve.sh [hostname]"
+	echo "./hostname.sh [hostname]"
 	exit 1
 fi
 
