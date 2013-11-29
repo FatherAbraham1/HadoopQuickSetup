@@ -28,7 +28,9 @@ When the two file's content is the same,it will be a single node cluster.
 
 * Run this script:
 
+```
 	sh install.sh
+```
 
 ## License
 
