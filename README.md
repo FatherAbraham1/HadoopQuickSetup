@@ -1,7 +1,7 @@
 hadoop-install
 ==============
 
-Shell scripts to install and deploy an Cloudera Hadoop cluster on CentOS 6
+Shell scripts to install and deploy a Cloudera Hadoop cluster on CentOS 6
 
 ## Usage
 
