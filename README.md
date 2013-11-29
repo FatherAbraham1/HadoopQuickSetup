@@ -1,57 +1,41 @@
 hadoop-install
 ==============
 
+Shell scripts to install and deploy an Cloudera Hadoop cluster on CentOS 6
 
-## Overview
+## Usage
 
-	.
-	├── all-in-one-install.sh
-	├── cluster-install.sh
-	├── command.sh
-	├── edh
-	├── patch
-	├── README.md
-	├── script
-	└── uninstall.sh
+* Clone this repo.
+* Update files.
 
-	3 directories, 5 files
+Update `edh/manager.csv`,this file contains manager's hostname.
 
+```
+	vim edh/manager.csv 
+	cdh1
+```
 
-* all-in-one-install.sh: install hadoop in one node
-* cluster-install.sh: install hadoop in a cluster
+Update `edh/nodes.csv`,this file contains all hadoop node's hostname.
 
-## How to use
+```
+	vim edh/nodes.csv 
+	cdh1
+	cdh2
+	cdh3
+```
 
-* all-in-one-install
+When the two file's content is the same,it will be a single node cluster.
 
-Run this commands:
+* Run this script:
 
-	[root@node1 cluster-install]# sh all-in-one-install.sh
+	sh install.sh
 
-Wait several seconds,run jps command and you will see:
+## License
 
-	[root@node1 ~]# jps
-	30455 RunJar
-	31060 HRegionServer
-	30539 RunJar
-	29874 DataNode
-	28843 NameNode
-	31160 Jps
-	29989 ResourceManager
-	30380 JobHistoryServer
-	30844 QuorumPeerMain
-	1810 SecondaryNameNode
-	30246 NodeManager
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
-* cluster-install
-Just run this comand:
+[http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
-	[root@node1 cluster-install]# sh cluster-install.sh
-
-## Change
-
-## TODO
-
-
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
  
