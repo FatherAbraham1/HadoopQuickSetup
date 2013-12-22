@@ -49,24 +49,32 @@
     <value>600000</value>
   </property>
   <property>
-    <name>hbase.rpc.timeout</name>
-    <value>120000</value>
+    <name>hbase.client.pause</name>
+    <value>20</value>
   </property>
   <property>
-    <name>hbase.client.pause</name>
-    <value>1000</value>
+    <name>hbase.ipc.client.tcpnodelay</name>
+    <value>true</value>
+  </property>
+  <property>
+    <name>ipc.ping.interval</name>
+    <value>3000</value>
   </property>
   <property>
     <name>hbase.client.retries.number</name>
     <value>4</value>
   </property>
   <property>
-    <name>hbase.client.scanner.caching</name>
-    <value>1</value>
-  </property>
-  <property>
     <name>hbase.rpc.timeout</name>
     <value>60000</value>
+  </property>
+  <property>
+    <name>hbase.zookeeper.property.maxClientCnxns</name>
+    <value>2000</value>
+  </property>
+  <property>
+    <name>hfile.block.cache.size</name>
+    <value>0.1</value>
   </property>
   <property>
     <name>hbase.security.authentication</name>
@@ -74,7 +82,7 @@
   </property>
   <property>
     <name>zookeeper.session.timeout</name>
-    <value>60000</value>
+    <value>180000</value>
   </property>
   <property>
     <name>hbase.zookeeper.quorum</name>

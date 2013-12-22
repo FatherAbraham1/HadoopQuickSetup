@@ -34,9 +34,8 @@ mussh -m -u -b -t 6 -H $TMP_FILE -c '
 	rm -rf /usr/lib/hive/lib/hive-hbase-handler.jar
 	ln -s /usr/lib/hive/lib/hive-hbase-handler-0.10.0-cdh4.3.0.jar /usr/lib/hive/lib/hive-hbase-handler.jar
 	
-	ln -sf /usr/lib64/libsnappy.so /usr/lib/hbase/lib/native/Linux-amd64-64/.
+	ln -sf /usr/lib64/libsnappy.so /usr/lib/hbase/lib/native/Linux-amd64-64/
 '
-
 echo "Install hadoop rpm finish ..."
 
 

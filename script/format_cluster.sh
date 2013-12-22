@@ -22,6 +22,10 @@ for server in `cat $NODES_FILE` ;do
 		rm -rf /hadoop/dfs /var/lib/zookeeper
 		mkdir -p /hadoop/dfs/data
 		chown -R hdfs:hdfs /hadoop/dfs && chmod -R 700 /hadoop/dfs/
+
+		rm -rf /var/run/hadoop-hdfs/
+		mkdir -p /var/run/hadoop-hdfs/
+		chown -R hdfs:hdfs /var/run/hadoop-hdfs/
 		
 		mkdir /var/lib/zookeeper
 		chown -R zookeeper:zookeeper /var/lib/zookeeper && chmod -R 700 /var/lib/zookeeper

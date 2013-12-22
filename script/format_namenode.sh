@@ -23,7 +23,7 @@ do
 done << EOF
 /hbase hbase hadoop 755
 /tmp hdfs hadoop 1777 
-/tmp/logs yarn mapred 1777
+/yarn/apps yarn mapred 1777
 /user hdfs hadoop 777
 /user/root root hadoop 755
 /user/hive hive hadoop 775

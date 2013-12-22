@@ -12,7 +12,7 @@
   </property>
   <property>
     <name>mapreduce.jobtracker.handler.count</name>
-    <value>10</value>
+    <value>60</value>
   </property>
   <property>
     <name>mapreduce.job.split.metainfo.maxsize</name>
