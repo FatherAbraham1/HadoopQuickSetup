@@ -23,6 +23,7 @@ for server in `cat $NODES_FILE` ;do
 		mkdir -p /hadoop/dfs/data
 		chown -R hdfs:hdfs /hadoop/dfs && chmod -R 700 /hadoop/dfs/
 
+		#http://archive.cloudera.com/cdh4/cdh/4/hadoop/hadoop-project-dist/hadoop-hdfs/ShortCircuitLocalReads.html
 		rm -rf /var/run/hadoop-hdfs/
 		mkdir -p /var/run/hadoop-hdfs/
 		chown -R hdfs:hdfs /var/run/hadoop-hdfs/
