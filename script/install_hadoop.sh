@@ -1,9 +1,9 @@
 #!/bin/sh
 
 HOSTNAME=`hostname`
-CONFIG_PATH=/etc/edh
-NODES_FILE=$CONFIG_PATH/nodes.csv
-MANAGER_FILE=$CONFIG_PATH/manager.csv
+CONFIG_PATH=/etc/edh/conf
+NODES_FILE=$CONFIG_PATH/nodes
+MANAGER_FILE=$CONFIG_PATH/manager
 TMP_FILE=/tmp/edh_tmp
 
 

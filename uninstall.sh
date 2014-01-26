@@ -20,6 +20,6 @@ else
 fi
 
 for node in $NODES_LIST ;do
-        ssh root@$node  "`cat script/clear_node.sh`"
+        ssh root@$node  "`cat script/remove_node.sh`"
 done
 

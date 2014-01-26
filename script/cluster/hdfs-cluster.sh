@@ -1,34 +1,32 @@
 #!/bin/sh
 
-if [ $# -ne 1 ]; then
-  echo "Usage: hdfs-cluster.sh start|stop|upgrade|upgrade-stop|rollback"
+if [ $# -lt 1 ]; then
+  echo "Usage: hdfs-cluster.sh start|stop|restart|status"
   exit 1
 fi
 
-export PDSH_SSH_ARGS_APPEND="-i /etc/intelcloud/idh-id_rsa"
-
-TOPDIR=/etc/edh/scripts/hadoop
 CONFDIR=/etc/edh/conf
 
 action=$1
 
-function start_nodes {
-  nodelist=$1
-  cmd=$2
-  if [ -f $nodelist ]; then
-    pdsh -S -w ^$nodelist $cmd
-  fi
-}
+if [ -s $CONFDIR/namenode ] ;then
+	mussh -m -u -b -t 6 -H $CONFDIR/namenode -c "service hadoop-hdfs-namenode $action"
+	echo "Done for Namenode $action."
+	echo ""
+fi
 
-#start namenode
-start_nodes $CONFDIR/namenode "$TOPDIR/hadoop-service.sh namenode $action"
-echo "Done for Namenode $action."
 
-#start datanodes
-start_nodes $CONFDIR/datanodes "$TOPDIR/hadoop-service.sh datanode $action"
-echo "Done for datanode(s) $action."
+if [ -s $CONFDIR/datanodes ] ;then
+	mussh -m -u -b -t 6 -H $CONFDIR/datanodes -c "service hadoop-hdfs-datanode $action"
+	echo "Done for Datanode(s) $action."
+	echo ""
+fi
 
-#start secondary namenodes
-start_nodes $CONFDIR/secondary_namenodes "$TOPDIR/hadoop-service.sh secondary_namenode $action"
-echo "Done for Secondary Namnode(s) $action."
+
+if [ -s $CONFDIR/secondary_namenode ] ;then
+	mussh -m -u -b -t 6 -H $CONFDIR/secondary_namenode -c "service hadoop-hdfs-secondarynamenode $action"
+	echo "Done for Secondary Namnode(s) $action."
+	echo ""
+fi
+
 
