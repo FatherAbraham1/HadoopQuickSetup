@@ -4,7 +4,7 @@
 <configuration>
  <property>
       <name>hadoop.tmp.dir</name>
-      <value>/hadoop</value>
+      <value>/applog</value>
   </property>
   <property>
     <name>dfs.https.address</name>

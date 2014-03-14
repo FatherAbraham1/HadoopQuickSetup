@@ -13,7 +13,7 @@ mussh -m -u -b -t 6 -H $MANAGER_FILE -c "
 
 echo "[INFO]:Install hadoop rpm on datanode"
 mussh -m -u -b -t 6 -H $NODES_FILE -c "
-	yum install -y hadoop hadoop-debuginfo hadoop-hdfs-datanode hadoop-yarn hadoop-yarn-nodemanager hive hive-server2 hive-jdbc zookeeper zookeeper-server hbase hbase-master hbase-regionserver
+	yum install -y hadoop hadoop-debuginfo hadoop-mapreduce-historyserver hadoop-hdfs-datanode hadoop-yarn hadoop-yarn-nodemanager hive hive-server2 hive-jdbc zookeeper zookeeper-server hbase hbase-master hbase-regionserver
 "
 
 cat $MANAGER_FILE $NODES_FILE |uniq>$TMP_FILE

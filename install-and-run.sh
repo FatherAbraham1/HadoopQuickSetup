@@ -100,8 +100,6 @@ sh rsync_file.sh
 
 sh install_postgres.sh
 
-exit
-
 sh cluster.sh stop
 sh format_cluster.sh
 sh cluster.sh start

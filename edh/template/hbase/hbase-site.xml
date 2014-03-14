@@ -12,10 +12,12 @@
     <name>hbase.cluster.distributed</name>
     <value>true</value>
   </property>
+  <!--
   <property>
      <name>hbase.coprocessor.region.classes</name>           
      <value>org.apache.hadoop.hbase.coprocessor.AggregateImplementation,org.apache.hadoop.hbase.coprocessor.GroupByImplementation</value>
   </property>
+  -->
   <property>
     <name>hbase.hregion.majorcompaction.cron</name>
     <value>0 0 1 * * ?</value>

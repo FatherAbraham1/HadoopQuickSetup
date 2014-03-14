@@ -9,25 +9,29 @@ CONFIG_PATH=/etc/edh/conf
 NODES_FILE=$CONFIG_PATH/nodes
 
 echo "rmove local dir in all cluster nodes"
-rm -rf /hadoop/dfs
-mkdir -p /hadoop/dfs/{name,namesecondary} 
-chown -R hdfs:hdfs /hadoop/dfs && chmod -R 700 /hadoop/dfs/
+rm -rf /applog/dfs
+mkdir -p /applog/dfs/{name,namesecondary} 
+chown -R hdfs:hdfs /applog/dfs && chmod -R 700 /applog/dfs/
 
-myid=0
 for server in `cat $NODES_FILE` ;do
-	myid=`expr $myid + 1`
-	echo -e "\ninit zookeeper in $server ..."
-
 	ssh -q root@$server  "
-		rm -rf /hadoop/dfs /var/lib/zookeeper
-		mkdir -p /hadoop/dfs/data
-		chown -R hdfs:hdfs /hadoop/dfs && chmod -R 700 /hadoop/dfs/
+		rm -rf /applog/dfs /var/lib/zookeeper
+		mkdir -p /applog/dfs/data
+		chown -R hdfs:hdfs /applog/dfs && chmod -R 700 /applog/dfs/
 
 		#http://archive.cloudera.com/cdh4/cdh/4/hadoop/hadoop-project-dist/hadoop-hdfs/ShortCircuitLocalReads.html
 		rm -rf /var/run/hadoop-hdfs/
 		mkdir -p /var/run/hadoop-hdfs/
 		chown -R hdfs:hdfs /var/run/hadoop-hdfs/
-		
+	"
+done
+
+myid=0
+for server in `cat $CONFIG_PATH/zookeepers` ;do
+	myid=`expr $myid + 1`
+	echo -e "\ninit zookeeper in $server ..."
+
+	ssh -q root@$server  "
 		mkdir /var/lib/zookeeper
 		chown -R zookeeper:zookeeper /var/lib/zookeeper && chmod -R 700 /var/lib/zookeeper
 		service zookeeper-server stop
