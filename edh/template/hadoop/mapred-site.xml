@@ -7,9 +7,18 @@
 	 <value>yarn</value>
   </property>
   <property>
+    <name>mapreduce.jobhistory.address</name>
+    <value>localhost:10020</value>
+  </property>
+  <property>
+    <name>mapreduce.jobhistory.webapp.address</name>
+    <value>localhost:19888</value>
+  </property>
+  <property>
  	<name>yarn.app.mapreduce.am.staging-dir</name>
 	 <value>/user</value>
   </property>
+
   <property>
     <name>mapreduce.jobtracker.handler.count</name>
     <value>60</value>
@@ -98,14 +107,7 @@
     <name>mapreduce.job.reduce.slowstart.completedmaps</name>
     <value>0.8</value>
   </property>
-  <property>
-    <name>mapreduce.jobhistory.address</name>
-    <value>localhost:10020</value>
-  </property>
-  <property>
-    <name>mapreduce.jobhistory.webapp.address</name>
-    <value>localhost:19888</value>
-  </property>
+  
   <property>
     <name>mapred.child.java.opts</name>
     <value> -Xmx512m -XX:+UseConcMarkSweepGC -XX:ParallelCMSThreads=1 -XX:ParallelGCThreads=1</value>
