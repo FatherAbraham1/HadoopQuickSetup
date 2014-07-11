@@ -11,7 +11,7 @@ TMP_FILE=/tmp/edh_tmp
 HOSTNAME=`hostname`
 PASSWORD='redhat'
 
-echo -e "\n[INFO]:Install Embrace(R) Distribution for Apache Hadoop* Software..."
+echo -e "\n[INFO]:Install JavaChen(R) Distribution for Apache Hadoop* Software..."
 echo -e "[INFO]:Hostname is $HOSTNAME, Time is `date +'%F %T'`, TimeZone is `date +'%Z %:z'`"
 
 ### copy edh ###

@@ -75,7 +75,7 @@ done
 
 ### install basic rpm ###
 echo -e "[INFO]:Installing jdk,rsync,expect,ntp,nagios,ssh and other required packages ..."
-yum install -y -q install jdk rsync expect openssh-server openssh-clients ntp nagios nagios-plugins
-if ! rpm -q jdk rsync expect openssh-server openssh-clients ntp>/dev/null ; then
+yum install -y -q install jdk rsync expect openssh-server openssh-clients ntp nagios nagios-plugins mussh pdsh pssh
+if ! rpm -q jdk rsync expect openssh-server openssh-clients ntp nagios nagios-plugins mussh pdsh pssh>/dev/null ; then
     exit 1
 fi
