@@ -21,9 +21,9 @@ cat $MANAGER_FILE $NODES_FILE |uniq>$TMP_FILE
 echo "Config hadoop alternatives ..."
 pssh -P -i -h $TMP_FILE '
 	rm -rf /etc/{hadoop,hive,hbase,zookeeper}/{conf,conf.my_cluster}
-	mkdir -p /etc/{hadoop,hive,hbase,zookeeper}/conf.my_cluster
 
 	for srv in hadoop hbase hive zookeeper ;do
+		cp /etc/${srv}/conf.dist /etc/${srv}/conf.my_cluster
 		alternatives --install /etc/${srv}/conf ${srv}-conf /etc/${srv}/conf.my_cluster 50
 		alternatives --set ${srv}-conf /etc/${srv}/conf.my_cluster
 	done

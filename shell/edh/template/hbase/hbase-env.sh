@@ -1,3 +1,24 @@
+#
+#/**
+# * Copyright 2007 The Apache Software Foundation
+# *
+# * Licensed to the Apache Software Foundation (ASF) under one
+# * or more contributor license agreements.  See the NOTICE file
+# * distributed with this work for additional information
+# * regarding copyright ownership.  The ASF licenses this file
+# * to you under the Apache License, Version 2.0 (the
+# * "License"); you may not use this file except in compliance
+# * with the License.  You may obtain a copy of the License at
+# *
+# *     http://www.apache.org/licenses/LICENSE-2.0
+# *
+# * Unless required by applicable law or agreed to in writing, software
+# * distributed under the License is distributed on an "AS IS" BASIS,
+# * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# * See the License for the specific language governing permissions and
+# * limitations under the License.
+# */
+
 # Set environment variables here.
 
 # This script sets variables multiple times over the course of starting an hbase process,
@@ -8,6 +29,7 @@
 # export JAVA_HOME=/usr/java/jdk1.6.0/
 
 # Extra Java CLASSPATH elements.  Optional.
+# export HBASE_CLASSPATH=
 
 # The maximum amount of heap to use, in MB. Default is 1000.
 # export HBASE_HEAPSIZE=1000
@@ -16,25 +38,33 @@
 # Below are what we set by default.  May only work with SUN JVM.
 # For more on why as well as other possible settings,
 # see http://wiki.apache.org/hadoop/PerformanceTuning
-#-XX:CMSInitiatingOccupancyFraction=N
-export HBASE_OPTS=" -server -XX:+HeapDumpOnOutOfMemoryError -XX:+UseConcMarkSweepGC -XX:-CMSConcurrentMTEnabled -XX:+CMSIncrementalMode $HBASE_OPTS"
+export HBASE_OPTS="-XX:+UseConcMarkSweepGC"
 
-export HBASE_OPTS="$HBASE_OPTS -XX:+UseParNewGC -XX:NewRatio=3"
+# Uncomment one of the below three options to enable java garbage collection logging for the server-side processes.
 
-# Uncomment below to enable java garbage collection logging for the server-side processes
-# this enables basic gc logging for the server processes to the .out file
-# export SERVER_GC_OPTS="-verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps $HBASE_GC_OPTS"
+# This enables basic gc logging to the .out file.
+# export SERVER_GC_OPTS="-verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps"
 
-# this enables gc logging using automatic GC log rolling. Only applies to jdk 1.6.0_34+ and 1.7.0_2+. Either use this set of options or the one above
-# export SERVER_GC_OPTS="-verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=1 -XX:GCLogFileSize=512M $HBASE_GC_OPTS"
+# This enables basic gc logging to its own file.
+# If FILE-PATH is not replaced, the log file(.gc) would still be generated in the HBASE_LOG_DIR .
+# export SERVER_GC_OPTS="-verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:<FILE-PATH>"
 
-# Uncomment below to enable java garbage collection logging for the client processes in the .out file.
-# export CLIENT_GC_OPTS="-verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps $HBASE_GC_OPTS"
+# This enables basic GC logging to its own file with automatic log rolling. Only applies to jdk 1.6.0_34+ and 1.7.0_2+.
+# If FILE-PATH is not replaced, the log file(.gc) would still be generated in the HBASE_LOG_DIR .
+# export SERVER_GC_OPTS="-verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:<FILE-PATH> -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=1 -XX:GCLogFileSize=512M"
 
-# Uncomment below (along with above GC logging) to put GC information in its own logfile (will set HBASE_GC_OPTS).
-# This applies to both the server and client GC options above
-# export HBASE_USE_GC_LOGFILE=true
+# Uncomment one of the below three options to enable java garbage collection logging for the client processes.
 
+# This enables basic gc logging to the .out file.
+# export CLIENT_GC_OPTS="-verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps"
+
+# This enables basic gc logging to its own file.
+# If FILE-PATH is not replaced, the log file(.gc) would still be generated in the HBASE_LOG_DIR .
+# export CLIENT_GC_OPTS="-verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:<FILE-PATH>"
+
+# This enables basic GC logging to its own file with automatic log rolling. Only applies to jdk 1.6.0_34+ and 1.7.0_2+.
+# If FILE-PATH is not replaced, the log file(.gc) would still be generated in the HBASE_LOG_DIR .
+# export CLIENT_GC_OPTS="-verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:<FILE-PATH> -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=1 -XX:GCLogFileSize=512M"
 
 # Uncomment below if you intend to use the EXPERIMENTAL off heap cache.
 # export HBASE_OPTS="$HBASE_OPTS -XX:MaxDirectMemorySize="
@@ -51,12 +81,6 @@ export HBASE_OPTS="$HBASE_OPTS -XX:+UseParNewGC -XX:NewRatio=3"
 # export HBASE_THRIFT_OPTS="$HBASE_THRIFT_OPTS $HBASE_JMX_BASE -Dcom.sun.management.jmxremote.port=10103"
 # export HBASE_ZOOKEEPER_OPTS="$HBASE_ZOOKEEPER_OPTS $HBASE_JMX_BASE -Dcom.sun.management.jmxremote.port=10104"
 # export HBASE_REST_OPTS="$HBASE_REST_OPTS $HBASE_JMX_BASE -Dcom.sun.management.jmxremote.port=10105"
-
-export HBASE_MASTER_OPTS="$HBASE_MASTER_OPTS -Xmx1024m"
-
-export HBASE_REGIONSERVER_OPTS="$HBASE_REGIONSERVER_OPTS -Xmx1g -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps"
-
-export HBASE_THRIFT_OPTS="$HBASE_THRIFT_OPTS -Xmx250m"
 
 # File naming hosts on which HRegionServers will run.  $HBASE_HOME/conf/regionservers by default.
 # export HBASE_REGIONSERVERS=${HBASE_HOME}/conf/regionservers
@@ -96,11 +120,12 @@ export HBASE_THRIFT_OPTS="$HBASE_THRIFT_OPTS -Xmx250m"
 
 # Tell HBase whether it should manage it's own instance of Zookeeper or not.
 # export HBASE_MANAGES_ZK=true
+
 # The default log rolling policy is RFA, where the log file is rolled as per the size defined for the 
 # RFA appender. Please refer to the log4j.properties file to see more details on this appender.
 # In case one needs to do log rolling on a date change, one should set the environment property
 # HBASE_ROOT_LOGGER to "<DESIRED_LOG LEVEL>,DRFA".
 # For example:
-HBASE_ROOT_LOGGER=INFO,DRFA
+# HBASE_ROOT_LOGGER=INFO,DRFA
 # The reason for changing default to RFA is to avoid the boundary case of filling out disk space as 
 # DRFA doesn't put any cap on the log size. Please refer to HBase-5655 for more context.
