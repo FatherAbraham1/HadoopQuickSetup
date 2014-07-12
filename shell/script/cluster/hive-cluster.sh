@@ -9,7 +9,7 @@ CONFDIR=/etc/edh/conf
 
 action=$1
 
-mussh -m -u -b -t 6 -H $CONFDIR/manager -c "service hive-metastore $action"
+pssh -P -i -h $CONFDIR/manager "service hive-metastore $action"
 echo "Done for Hive MetaStore $action."
 echo ""
 
@@ -20,7 +20,7 @@ echo ""
 #fi
 
 if [ -s $CONFDIR/hive_server2s ] ;then
-	mussh -m -u -b -t 6 -H $CONFDIR/hive_server2s -c "service hive-server2 $action"
+	pssh -P -i -h $CONFDIR/hive_server2s "service hive-server2 $action"
 	echo "Done for Hive server2(s) $action."
 	echo ""
 fi

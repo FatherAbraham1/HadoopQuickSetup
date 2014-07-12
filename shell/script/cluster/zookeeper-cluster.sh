@@ -10,6 +10,6 @@ CONFDIR=/etc/edh/conf
 action=$1
 
 #start quorum
-mussh -m -u -b -t 6 -H $CONFDIR/zookeepers -c "service zookeeper-server $action"
+pssh -P -i -h $CONFDIR/zookeepers "service zookeeper-server $action"
 echo "Done for zookeeper(s) $action."
 echo ""

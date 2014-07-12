@@ -10,17 +10,17 @@ CONFDIR=/etc/edh/conf
 action=$1
 
 #start historyserver
-mussh -m -u -b -t 6 -H $CONFDIR/historyserver -c "service hadoop-mapreduce-historyserver $action"
+pssh -P -i -h $CONFDIR/historyserver "service hadoop-mapreduce-historyserver $action"
 echo "Done for HistroyServer $action."
 echo ""
 
 #start nodemanager
-mussh -m -u -b -t 6 -H $CONFDIR/nodemanager -c "service hadoop-yarn-nodemanager $action"
+pssh -P -i -h $CONFDIR/nodemanager "service hadoop-yarn-nodemanager $action"
 echo "Done for NodeManager $action."
 echo ""
 
 #start resourcemanager
-mussh -m -u -b -t 6 -H $CONFDIR/resourcemanagers -c "service hadoop-yarn-resourcemanager $action"
+pssh -P -i -h $CONFDIR/resourcemanagers "service hadoop-yarn-resourcemanager $action"
 echo "Done for ResourceManager(s) $action."
 echo ""
 

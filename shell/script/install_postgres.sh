@@ -92,7 +92,7 @@ check_postgresql_installed
 configure_postgresql_conf
 enable_remote_connections
 create_db metastore hiveuser redhat
-init_hive_metastore metastore hiveuser "/usr/lib/hive/scripts/metastore/upgrade/postgres/hive-schema-0.10.0.postgres.sql"
+init_hive_metastore metastore hiveuser "/usr/lib/hive/scripts/metastore/upgrade/postgres/hive-schema-0.12.0.postgres.sql"
 restart_db
 
 
