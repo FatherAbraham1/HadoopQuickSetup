@@ -1,8 +1,5 @@
 #!/bin/sh
 
-HOSTNAME=`hostname`
-PASSWORD="redhat"
-
 function addline {
     line=$1
     file=$2
@@ -74,8 +71,8 @@ for user in hdfs mapred hbase zookeeper hive $curuser ;do
 done
 
 ### install basic rpm ###
-echo -e "[INFO]:Installing jdk rsync expect openssh-server openssh-clients ntp nagios nagios-plugins pdsh pssh"
-yum install -y -q install jdk rsync expect openssh-server openssh-clients ntp nagios nagios-plugins pdsh pssh
-if ! rpm -q jdk rsync expect openssh-server openssh-clients ntp nagios nagios-plugins pdsh pssh>/dev/null ; then
+echo -e "[INFO]:Installing jdk rsync expect openssh-server openssh-clients ntp nagios nagios-plugins pssh"
+yum install -y -q install jdk rsync expect openssh-server openssh-clients ntp nagios nagios-plugins pssh
+if ! rpm -q hadoop hbase hive zookeeper hadoop-yarn hadoop-debuginfo jdk rsync expect openssh-server openssh-clients ntp nagios nagios-plugins pssh>/dev/null ; then
     exit 1
 fi

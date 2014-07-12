@@ -10,7 +10,7 @@ CONFDIR=/etc/edh/conf
 action=$1
 
 #start historyserver
-pssh -P -i -h $CONFDIR/historyserver "service hadoop-mapreduce-historyserver $action"
+pssh -P -i -h $CONFDIR/historyserver "service hadoop-mapreduce-historyserver $action > /dev/null"
 echo "Done for HistroyServer $action."
 echo ""
 

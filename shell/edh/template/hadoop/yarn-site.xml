@@ -24,11 +24,11 @@
   </property>
   <property>
   	<name>yarn.nodemanager.local-dirs</name>
-  	<value>/var/log/hadoop-yarn/local</value>
+  	<value>file:///var/log/hadoop-yarn/local</value>
   </property>
   <property>
 	  <name>yarn.nodemanager.log-dirs</name>
-  	<value>/var/log/hadoop-yarn/logs</value>
+  	<value>file:///var/log/hadoop-yarn/logs</value>
   </property>
   <property>
   	<name>yarn.nodemanager.remote-app-log-dir</name>

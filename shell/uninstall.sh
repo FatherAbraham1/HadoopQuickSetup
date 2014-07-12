@@ -7,19 +7,33 @@ if [ $# == 0 ]; then
   "; exit 1; 
 fi
 
-NODES_FILE="/etc/edh/nodes.csv"
+function continue_ask {
+	continue_flag="undef"
+	while [ "$continue_flag" != "yes" -a "$continue_flag" != "no" ]
+	do
+		echo -n "[INFO]:Type yes to continue or no to exit uninstallation...[yes|no]: "
+		read continue_flag
+		if [ "$continue_flag" == "no" ]; then
+		  	return 1
+		fi
+	done
+	return 0
+}
+
+
+NODES_FILE="/etc/edh/conf/nodes"
 if [ "$1" == "ALL" ] || [ "$1" == "all" ]; then
+	continue_ask
 	if [ -f $NODES_FILE ]; then
-		NODES_LIST=`cat $NODES_FILE`
+		pssh -P -i -h $NODES_FILE `cat script/remove_node.sh` 
 	else
-		echo "ERROR: Can not found role configuration file $NODES_FILE"
+		echo "[ERROR]: Can not found role configuration file $NODES_FILE"
 		exit 1
 	fi
 else
-	NODES_LIST=$*
+	NODES=$*
+	continue_ask
+	
+	pssh -P -i -H $NODES "`cat script/remove_node.sh`" 
 fi
-
-for node in $NODES_LIST ;do
-        ssh root@$node  "`cat script/remove_node.sh`"
-done
 

@@ -12,6 +12,8 @@ if [ $action == "start" ]; then
 	sh cluster/yarn-cluster.sh $action
 	sh cluster/hive-cluster.sh $action
 	sh cluster/zookeeper-cluster.sh $action
+
+	sleep 5
 	sh cluster/hbase-cluster.sh $action
 else 
 	sh cluster/yarn-cluster.sh $action

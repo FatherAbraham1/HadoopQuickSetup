@@ -7,9 +7,8 @@ Shell scripts to install and deploy a Cloudera Hadoop cluster on CentOS and Fedo
 
 These are required:
 
-- mussh
 - expect
-- pdsh
+- rsync
 - pssh
 
 # Install

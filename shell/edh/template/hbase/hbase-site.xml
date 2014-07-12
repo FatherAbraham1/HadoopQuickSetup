@@ -57,7 +57,7 @@
   </property>
   <property>
     <name>hbase.regionserver.handler.count</name>
-    <value>100</value>
+    <value>20</value>
   </property>
   <property>
     <name>hbase.regionserver.lease.period</name>
