@@ -6,12 +6,12 @@ NODES_FILE=$EDH_PATH/conf/nodes
 ZK_HOSTNAME=`cat $NODES_FILE |tr '\n' ','|  sed 's/,$//'`
 SLAVES=`cat $NODES_FILE`
 
+echo "[INFO]:copy hadoop template conf"
 
-for srv in hadoop hbase hive zookeeper ;do
-	cp -u ${EDH_PATH}/template/${srv}/* /etc/${srv}/conf
+for srv in hadoop hbase hive zookeeper ; do
+	\cp ${EDH_PATH}/template/${srv}/* /etc/${srv}/conf/
 	chmod 755 -R /etc/${srv}/conf
 done
-
 
 echo "[INFO]:replace hadoop conf"
 sed -i "s|localhost|$HOSTNAME|g" /etc/hadoop/conf/core-site.xml
@@ -26,8 +26,11 @@ sed -i "s|zkhost|$ZK_HOSTNAME|g" /etc/hbase/conf/hbase-site.xml
 
 echo "[INFO]:rsync postgresql-jdbc"
 pscp -h $NODES_FILE ${EDH_PATH}/template/postgresql-9.1-901.jdbc4.jar /usr/lib/hive/lib/postgresql-jdbc.jar
+chmod 644  /usr/lib/hive/lib/postgresql-jdbc.jar
 
 for srv in hadoop hbase hive zookeeper ;do
 	echo "[INFO]:rsync $srv conf"
-	prsync -h $NODES_FILE  -a -r /etc/${srv}/conf.my_cluster /etc/${srv}
+	for file in `ls  /etc/${srv}/conf` ;do
+			[ -f $file ] && (pscp -h $NODES_FILE  /etc/${srv}/conf/$file /etc/${srv}/conf)
+	done
 done

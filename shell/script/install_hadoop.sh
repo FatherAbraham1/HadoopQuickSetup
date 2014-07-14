@@ -21,10 +21,11 @@ cat $MANAGER_FILE $NODES_FILE |uniq>$TMP_FILE
 
 echo "Config hadoop alternatives ..."
 pssh -P -i -h $TMP_FILE '
-	rm -rf /etc/{hadoop,hive,hbase,zookeeper}/{conf,conf.my_cluster}
+	rm -rf /etc/{hadoop,hive,hbase,zookeeper}/conf.my_cluster
 
 	for srv in hadoop hbase hive zookeeper ;do
-		cp -r  /etc/${srv}/conf.dist /etc/${srv}/conf.my_cluster
+		mkdir /etc/${srv}/conf.my_cluster
+		cp -r  /etc/${srv}/conf.dist/* /etc/${srv}/conf.my_cluster
 		alternatives --install /etc/${srv}/conf ${srv}-conf /etc/${srv}/conf.my_cluster 50
 		alternatives --set ${srv}-conf /etc/${srv}/conf.my_cluster
 	done
@@ -33,7 +34,7 @@ pssh -P -i -h $TMP_FILE '
 	chown -R hive:hive  /var/lib/hive/.hivehistory
 
 	rm -rf /usr/lib/hive/lib/hive-hbase-handler.jar
-	ln -s /usr/lib/hive/lib/hive-hbase-handler-0.10.0-cdh4.3.0.jar /usr/lib/hive/lib/hive-hbase-handler.jar
+	ln -s `ls /usr/lib/hive/lib/hive-hbase-handler*|head -n 1` /usr/lib/hive/lib/hive-hbase-handler.jar
 	
 	mkdir -p /usr/lib/hbase/lib/native/Linux-amd64-64/
 	ln -sf /usr/lib64/libsnappy.so /usr/lib/hbase/lib/native/Linux-amd64-64/
