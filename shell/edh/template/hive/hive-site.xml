@@ -19,13 +19,6 @@
 
 <configuration>
 
-<!-- Hive Configuration can either be stored in this file or in the hadoop configuration files  -->
-<!-- that are implied by Hadoop setup variables.                                                -->
-<!-- Aside from Hadoop setup variables - this file is provided as a convenience so that Hive    -->
-<!-- users do not have to edit hadoop configuration files (that may be managed as a centralized -->
-<!-- resource).                                                                                 -->
-
-<!-- Hive Execution Parameters -->
 <property>
   	<name>javax.jdo.option.ConnectionURL</name>
     	<value>jdbc:postgresql://localhost/metastore</value>
@@ -82,21 +75,6 @@
 <property>    
 	<name>hive.metastore.cache.pinobjtypes</name>    
     	<value>Table,Database,Type,FieldSchema,Order</value>    
-</property>
-
-<property>
-        <name>hive.aux.jars.path</name>
-        <value>file:///usr/lib/hive/lib/zookeeper.jar,file:///usr/lib/hive/lib/hive-hbase-handler.jar,file:///usr/lib/hive/lib/hbase.jar</value>
-</property>
-
-<property>
-        <name>hive.metastore.execute.setugi</name>
-        <value>true</value>
-</property>
-
-<property>
-        <name>hive.metastore.authorization.storage.checks</name>
-        <value>true</value>
 </property>
 
 </configuration>
