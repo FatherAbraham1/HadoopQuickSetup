@@ -9,7 +9,8 @@ TMP_FILE=/tmp/edh_tmp
 
 echo "[INFO]:Install hadoop rpm on namenode"
 pssh -P -i -h $MANAGER_FILE  "
-	yum install -y hadoop-hdfs-namenode hadoop-hdfs-secondarynamenode hadoop-mapreduce-historyserver hadoop-yarn-resourcemanager hive-metastore"
+	yum install -y hadoop-hdfs-namenode hadoop-hdfs-secondarynamenode hadoop-mapreduce-historyserver hadoop-yarn-resourcemanager hive-metastore
+"
 
 echo "[INFO]:Install hadoop rpm on datanode"
 pssh -P -i -h  $NODES_FILE "
@@ -23,7 +24,7 @@ pssh -P -i -h $TMP_FILE '
 	rm -rf /etc/{hadoop,hive,hbase,zookeeper}/{conf,conf.my_cluster}
 
 	for srv in hadoop hbase hive zookeeper ;do
-		cp /etc/${srv}/conf.dist /etc/${srv}/conf.my_cluster
+		cp -r  /etc/${srv}/conf.dist /etc/${srv}/conf.my_cluster
 		alternatives --install /etc/${srv}/conf ${srv}-conf /etc/${srv}/conf.my_cluster 50
 		alternatives --set ${srv}-conf /etc/${srv}/conf.my_cluster
 	done
@@ -38,6 +39,8 @@ pssh -P -i -h $TMP_FILE '
 	ln -sf /usr/lib64/libsnappy.so /usr/lib/hbase/lib/native/Linux-amd64-64/
 '
 echo "Install hadoop rpm finish ..."
+
+
 
 
 
