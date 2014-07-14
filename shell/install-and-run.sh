@@ -43,9 +43,15 @@ done
 
 if [ -s $TMP_FILE ] ;then
 	# sync yum
+	echo "[INFO]:Sync repos"
 	pscp -h $TMP_FILE /etc/yum.repos.d/*.repo /etc/yum.repos.d/
 	# config nodes
-	pssh -P -i -h $TMP_FILE '`cat config.sh`'
+	echo "[INFO]:Config node"
+	
+	#mussh -m -u -b -t 6 -H  $TMP_FILE -C config.sh
+	
+	pssh -P -i -h $TMP_FILE  "`cat config.sh`" 
+	echo "[INFO]:Sync ntp conf"
 	pscp -h $TMP_FILE /etc/localtime /etc/localtime
 	pscp -h $TMP_FILE /etc/sysconfig/clock /etc/sysconfig/clock
 fi
@@ -94,6 +100,7 @@ pssh -P -i -h $TMP_FILE '
 '
 
 sh install_hadoop.sh
+
 sh rsync_file.sh
 
 sh install_postgres.sh

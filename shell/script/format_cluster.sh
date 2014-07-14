@@ -46,8 +46,9 @@ echo -e "\n[INFO]:Format hadoop cluster"
 
 #ps -ef|grep zookeeper|grep QuorumPeerMain|awk '{print $2}'|xargs kill -9
 
-su -s /bin/bash hdfs -c 'yes Y | hadoop namenode -format'
+su -s /bin/bash hdfs -c 'yes Y | hadoop namenode -format' 
 
+exit
 service hadoop-hdfs-namenode start
 sleep 10
 
