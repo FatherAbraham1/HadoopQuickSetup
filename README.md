@@ -1,7 +1,7 @@
 hadoop-install
 ==============
 
-# Overreview
+# Overview
 
 - shell: install hadoop cluster with shell scripts
 - saltstack: install hadoop cluster with saltstack
