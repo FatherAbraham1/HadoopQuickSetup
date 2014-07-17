@@ -37,6 +37,21 @@ echo "export JAVA_HOME=/usr/java/latest" >> ~/.bashrc
 echo "export CLASSPATH=.:\$JAVA_HOME/lib/tools.jar:\$JAVA_HOME/lib/dt.jar">>~/.bashrc
 echo "export PATH=\$JAVA_HOME/bin:\$PATH" >> ~/.bashrc
 
+echo  "
+export HADOOP_HOME=/usr/lib/hadoop
+export HIVE_HOME=/usr/lib/hive
+export HBASE_HOME=/usr/lib/hbase
+export HADOOP_HDFS_HOME=/usr/lib/hadoop-hdfs
+export HADOOP_MAPRED_HOME=/usr/lib/hadoop-mapreduce
+export HADOOP_COMMON_HOME=${HADOOP_HOME}
+export HADOOP_HDFS_HOME=/usr/lib/hadoop-hdfs
+export HADOOP_LIBEXEC_DIR=${HADOOP_HOME}/libexec
+export HADOOP_CONF_DIR=${HADOOP_HOME}/etc/hadoop
+export HDFS_CONF_DIR=${HADOOP_HOME}/etc/hadoop
+export YARN_HOME=/usr/lib/hadoop-yarn
+export YARN_CONF_DIR=${HADOOP_HOME}/etc/hadoop
+">v~/.bashrc
+
 alternatives --install /usr/bin/java java /usr/java/latest 5
 alternatives --set java /usr/java/latest 
 source ~/.bashrc
@@ -59,14 +74,14 @@ else
 	sed -i "s:^fs.file-max.*:fs.file-max = 727680:g" /etc/sysctl.conf
 fi
 
-addline "*	soft	nofile	327680" /etc/security/limits.conf
+addline "*	soft		nofile	327680" /etc/security/limits.conf
 addline "*	hard	nofile	327680" /etc/security/limits.conf
-addline "root	soft	nofile	327680" /etc/security/limits.conf
+addline "root	soft		nofile	327680" /etc/security/limits.conf
 addline "root	hard	nofile	327680" /etc/security/limits.conf
 
 curuser=`whoami`
-for user in hdfs mapred hbase zookeeper hive $curuser ;do
-    addline "$user	soft	nproc	131072" /etc/security/limits.conf
+for user in hdfs mapred hbase zookeeper hive impala flume $curuser ;do
+    addline "$user	soft		nproc	131072" /etc/security/limits.conf
     addline "$user	hard	nproc	131072" /etc/security/limits.conf
 done
 

@@ -33,8 +33,7 @@ for server in `cat $CONFIG_PATH/zookeepers` ;do
 		service zookeeper-server stop
 		pkill -9 zookeeper-server
 
-		rm -rf /var/lib/zookeeper
-		mkdir /var/lib/zookeeper
+		rm -rf /var/lib/zookeeper/* ; mkdir /var/lib/zookeeper
 		chown -R zookeeper:zookeeper /var/lib/zookeeper && chmod -R 700 /var/lib/zookeeper
 
 		service zookeeper-server init --myid=$myid
