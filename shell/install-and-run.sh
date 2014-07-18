@@ -31,7 +31,8 @@ pscp -H "$ALL_HOSTS" /etc/yum.repos.d/*.repo /etc/yum.repos.d/
 pscp -H "$ALL_HOSTS" /etc/localtime /etc/localtime
 pscp -H "$ALL_HOSTS" /etc/sysconfig/clock /etc/sysconfig/clock
 
-pssh -P -i -H "$NODES_ONLY" "`cat config.sh`" 
+pssh -P -i -H "$NODES_ONLY"  "`cat config.sh`" 
+
 
 ### ntp ###
 echo "[INFO]:Config ntp"

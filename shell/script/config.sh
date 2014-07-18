@@ -37,7 +37,15 @@ addline "LogLevel ERROR" ~/.ssh/config
 
 ### JAVA_HOME ###
 echo -e "[INFO]:Config JAVA_HOME ..."
-echo "" > ~/.bashrc
+echo " 
+ # .bashrc
+
+ # Source global definitions
+ if [ -f /etc/bashrc ]; then
+    . /etc/bashrc
+ fi
+umask 022
+" > ~/.bashrc
 
 if [ -f ~/.bashrc ] ; then
     sed -i '/^export[[:space:]]\{1,\}JAVA_HOME[[:space:]]\{0,\}=/d' ~/.bashrc
@@ -71,7 +79,7 @@ source ~/.bashrc
 ### set global file limit ###
 echo -e "[INFO]: Set Global file limit ..."
 
-sysctl -w vm.swappiness=0 
+#sysctl -w vm.swappiness=0 
 
 rst=`grep "^fs.file-max" /etc/sysctl.conf`
 if [ "x$rst" = "x" ] ; then

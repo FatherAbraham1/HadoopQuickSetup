@@ -13,6 +13,6 @@ HOSTS="`cat $NODES_FILE $MANAGER_FILE  |sort -n | uniq | tr '\n' ' '|  sed 's/,$
 
 for node in $HOSTS;do
 	echo "----$node----"
-	scp -r $1 root@$node:$2 
+	scp -rp $1 root@$node:$2 
 done
 
