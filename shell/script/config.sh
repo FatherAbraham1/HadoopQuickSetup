@@ -67,6 +67,9 @@ addline "LogLevel ERROR" ~/.ssh/config
 
 ### set global file limit ###
 echo -e "[INFO]: Set Global file limit ..."
+
+sysctl -w vm.swappiness=0 
+
 rst=`grep "^fs.file-max" /etc/sysctl.conf`
 if [ "x$rst" = "x" ] ; then
 	echo "fs.file-max = 727680" >> /etc/sysctl.conf || exit $?
