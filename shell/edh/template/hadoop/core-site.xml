@@ -1,16 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <configuration>
-  <property>
-    <name>fs.defaultFS</name>
-    <value>hdfs://localhost:8020</value>
-  </property>
-  <property>
-    <name>fs.trash.interval</name>
-    <value>14400</value>
-  </property>
-  <property>
-    <name>io.file.buffer.size</name>
-    <value>65536</value>
-  </property>
+	<property>
+		<name>fs.defaultFS</name>
+		<value>hdfs://localhost:8020</value>
+	</property>
+	<property>
+		<name>fs.trash.interval</name>
+		<value>14400</value>
+	</property>
+	<property>
+		<name>io.file.buffer.size</name>
+		<value>65536</value>
+	</property>
+	
+	<property>
+		<name>hadoop.proxyuser.hive.hosts</name>
+		<value>*</value>
+	</property>
+	<property>
+		<name>hadoop.proxyuser.hive.groups</name>
+		<value>*</value>
+	</property>
+
+  	<property>
+    	<name>io.compression.codecs</name>        ​     
+    	<value>org.apache.hadoop.io.compress.DefaultCodec,org.apache.hadoop.io.compress.GzipCodec,org.apache.hadoop.io.compress.BZip2Codec,com.hadoop.compression.lzo.LzopCodec,org.apache.hadoop.io.compress.SnappyCodec</value>
+  	</property
+	<property>
+		<name>io.compression.codec.lzo.class</name>
+		<value>com.hadoop.compression.lzo.LzoCodec</value>
+	</property>
 </configuration>

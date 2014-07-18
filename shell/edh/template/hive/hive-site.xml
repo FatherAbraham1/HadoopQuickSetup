@@ -61,4 +61,8 @@
 	    	<value>Table,Database,Type,FieldSchema,Order</value>    
 	</property>
 
+	<property>
+	  <name>hive.server2.enable.impersonation</name>
+	  <value>true</value>
+	</property>
 </configuration>

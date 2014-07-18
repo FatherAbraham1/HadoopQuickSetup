@@ -90,7 +90,7 @@ done
 
 ### install basic rpm ###
 echo -e "[INFO]:Installing jdk rsync expect openssh-server openssh-clients ntp pssh"
-yum install -y -q install jdk hadoop hbase hive zookeeper hadoop-yarn hadoop-debuginfo rsync expect openssh-server openssh-clients ntp pssh
-if ! rpm -q hadoop hbase hive zookeeper hadoop-yarn hadoop-debuginfo jdk rsync expect openssh-server openssh-clients ntp pssh>/dev/null ; then
+yum install -y -q install jdk postgresql-jdbc hadoop hbase hive zookeeper hadoop-yarn hadoop-debuginfo rsync expect openssh-server openssh-clients ntp pssh
+if ! rpm -q hadoop hbase hive zookeeper hadoop-yarn hadoop-debuginfo jdk postgresql-jdbc rsync expect openssh-server openssh-clients ntp pssh>/dev/null ; then
     exit 1
 fi

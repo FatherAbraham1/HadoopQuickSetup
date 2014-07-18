@@ -10,7 +10,6 @@ echo "[INFO]:copy hadoop template conf"
 
 for srv in hadoop hbase hive zookeeper ; do
 	\cp ${EDH_PATH}/template/${srv}/* /etc/${srv}/conf/
-	chmod 755 -R /etc/${srv}/conf
 done
 
 echo "[INFO]:replace hadoop conf"
@@ -24,13 +23,12 @@ sed -i "s|localhost|$HOSTNAME|g" /etc/hbase/conf/hbase-site.xml
 #sed -i "s|localhost|$SLAVES|g" /etc/hbase/conf/regionservers
 sed -i "s|zkhost|$ZK_HOSTNAME|g" /etc/hbase/conf/hbase-site.xml
 
-echo "[INFO]:rsync postgresql-jdbc"
-pscp -h $NODES_FILE ${EDH_PATH}/template/postgresql-9.1-901.jdbc4.jar /usr/lib/hive/lib/postgresql-jdbc.jar
-chmod 644  /usr/lib/hive/lib/postgresql-jdbc.jar
-
 for srv in hadoop hbase hive zookeeper ;do
 	echo "[INFO]:rsync $srv conf"
 	for file in `ls  /etc/${srv}/conf` ;do
 			[ -f $file ] && (pscp -h $NODES_FILE  /etc/${srv}/conf/$file /etc/${srv}/conf)
 	done
 done
+
+pscp -h $NODES_FILE ${EDH_PATH}/template/postgresql-9.1-901.jdbc4.jar /usr/lib/hive/lib/postgresql-jdbc.jar
+

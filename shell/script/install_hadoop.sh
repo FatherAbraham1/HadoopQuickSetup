@@ -21,14 +21,15 @@ cat $MANAGER_FILE $NODES_FILE |uniq>$TMP_FILE
 
 echo "Config hadoop alternatives ..."
 pssh -P -i -h $TMP_FILE '
-	rm -rf /etc/{hadoop,hive,hbase,zookeeper}/conf.my_cluster
+	rm -rf /data/dfs
+	mkdir -p /data/dfs/{dn,nn,namesecondary} /data/yarn/{local,logs}
+	chown -R hdfs:hdfs /data/dfs && chmod -R 700 /data/dfs/
+	chown -R yarn:yarn /data/yarn
 
-	for srv in hadoop hbase hive zookeeper ;do
-		mkdir /etc/${srv}/conf.my_cluster
-		cp -r  /etc/${srv}/conf.dist/* /etc/${srv}/conf.my_cluster
-		alternatives --install /etc/${srv}/conf ${srv}-conf /etc/${srv}/conf.my_cluster 50
-		alternatives --set ${srv}-conf /etc/${srv}/conf.my_cluster
-	done
+	#http://archive.cloudera.com/cdh4/cdh/4/hadoop/hadoop-project-dist/hadoop-hdfs/ShortCircuitLocalReads.html
+	rm -rf /var/run/hadoop-hdfs/
+	mkdir -p /var/run/hadoop-hdfs/
+	chown -R hdfs:hdfs /var/run/hadoop-hdfs/
 
 	touch /var/lib/hive/.hivehistory
 	chown -R hive:hive  /var/lib/hive/.hivehistory
@@ -39,7 +40,25 @@ pssh -P -i -h $TMP_FILE '
 	mkdir -p /usr/lib/hbase/lib/native/Linux-amd64-64/
 	ln -sf /usr/lib64/libsnappy.so /usr/lib/hbase/lib/native/Linux-amd64-64/
 '
-echo "Install hadoop rpm finish ..."
+
+myid=0
+
+for server in `cat $CONFIG_PATH/zookeepers` ;do
+	myid=`expr $myid + 1`
+	echo -e "\n[INFO]:init zookeeper in $server ..."
+
+	ssh -q root@$server  "
+		service zookeeper-server stop
+		pkill -9 zookeeper-server
+
+		rm -rf /var/lib/zookeeper/* ; mkdir /var/lib/zookeeper
+		chown -R zookeeper:zookeeper /var/lib/zookeeper && chmod -R 700 /var/lib/zookeeper
+
+		service zookeeper-server init --myid=$myid
+	"
+done
+
+echo "Install hadoop finish ..."
 
 
 

@@ -4,42 +4,8 @@ if [ `id -u` -ne 0 ]; then
    echo "[ERROR]:Must run as root";   exit 1
 fi
 
-
 CONFIG_PATH=/etc/edh/conf
 NODES_FILE=$CONFIG_PATH/nodes
-
-echo "[INFO]:remove local dir in all cluster nodes"
-rm -rf /data/dfs
-mkdir -p /data/dfs/{name,namesecondary} 
-chown -R hdfs:hdfs /data/dfs && chmod -R 700 /data/dfs/
-
-pssh -P -i -h $NODES_FILE  "
-		rm -rf /data/dfs /var/lib/zookeeper
-		mkdir -p /data/dfs/data
-		chown -R hdfs:hdfs /data/dfs && chmod -R 700 /data/dfs/
-
-		#http://archive.cloudera.com/cdh4/cdh/4/hadoop/hadoop-project-dist/hadoop-hdfs/ShortCircuitLocalReads.html
-		rm -rf /var/run/hadoop-hdfs/
-		mkdir -p /var/run/hadoop-hdfs/
-		chown -R hdfs:hdfs /var/run/hadoop-hdfs/
-	"
-
-myid=0
-for server in `cat $CONFIG_PATH/zookeepers` ;do
-	myid=`expr $myid + 1`
-	echo -e "\n[INFO]:init zookeeper in $server ..."
-
-	ssh -q root@$server  "
-		service zookeeper-server stop
-		pkill -9 zookeeper-server
-
-		rm -rf /var/lib/zookeeper/* ; mkdir /var/lib/zookeeper
-		chown -R zookeeper:zookeeper /var/lib/zookeeper && chmod -R 700 /var/lib/zookeeper
-
-		service zookeeper-server init --myid=$myid
-	"
-done
-
 
 echo -e "\n[INFO]:Format hadoop cluster"
 

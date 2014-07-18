@@ -105,8 +105,14 @@ sh rsync_file.sh
 
 sh install_postgres.sh
 
-sh cluster.sh stop
+sh cluster.sh hive stop
+sh cluster.sh hbase stop
+sh cluster.sh hadoop stop
+
 sh format_cluster.sh
-sh cluster.sh start
+
+sh cluster.sh hadoop start
+sh cluster.sh hbase start
+sh cluster.sh hive start
 
 echo "[INFO]:Install hadoop on cluster complete!"
