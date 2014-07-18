@@ -13,12 +13,12 @@ echo -e "\n[INFO]:Format hadoop cluster"
 
 su -s /bin/bash hdfs -c 'yes Y | hadoop namenode -format' 
 
-exit
 service hadoop-hdfs-namenode start
 sleep 10
 
 echo "[INFO]:create hdfs dir ..."
 su -s /bin/bash hdfs -c 'hadoop fs -chmod 755 /'
+
 while read dir user group perm
 do
    	su -s /bin/bash hdfs -c "hadoop fs -mkdir -p $dir && hadoop fs -chmod $perm $dir && hadoop fs -chown $user:$group $dir"

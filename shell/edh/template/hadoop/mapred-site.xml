@@ -2,8 +2,8 @@
 
 <configuration>
   <property>
- 	<name>mapreduce.framework.name</name>
-	 <value>yarn</value>
+    <name>mapreduce.framework.name</name>
+    <value>yarn</value>
   </property>
   <property>
     <name>mapreduce.jobhistory.address</name>
@@ -14,11 +14,40 @@
     <value>localhost:19888</value>
   </property>
   <property>
- 	<name>yarn.app.mapreduce.am.staging-dir</name>
-	 <value>/user</value>
+  	<name>yarn.app.mapreduce.am.staging-dir</name>
+   <value>/user</value>
   </property>  
   <property>
     <name>mapred.child.java.opts</name>
     <value> -Xmx512m -XX:+UseConcMarkSweepGC -XX:ParallelCMSThreads=1 -XX:ParallelGCThreads=1</value>
+  </property>
+  <!--http://www.cloudera.com/content/cloudera-content/cloudera-docs/CM4Ent/4.8.2/Cloudera-Manager-Release-Notes/cmrn_changed_features.html-->
+  <property>
+    <name>mapreduce.map.memory.mb</name>
+    <value>256</value>
+  </property>
+  <property>
+    <name>mapreduce.reduce.memory.mb</name>
+    <value>256</value>
+  </property>
+  <property>
+    <name>mapreduce.map.java.opts.max.heap</name>
+    <value>200</value>
+  </property>
+  <property>
+    <name>mapreduce.reduce.java.opts.max.heap</name>
+    <value>200</value>
+  </property>
+  <property>
+    <name>mapreduce.reduce.shuffle.parallelcopies</name>
+    <value>10</value>
+  </property>
+  <property>
+    <name>mapreduce.task.io.sort.factor</name>
+    <value>64</value>
+  </property>
+  <property>
+    <name>mapreduce.task.io.sort.mb</name>
+    <value>256</value>
   </property>
 </configuration>
