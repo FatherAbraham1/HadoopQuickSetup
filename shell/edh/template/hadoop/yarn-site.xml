@@ -68,4 +68,8 @@ $YARN_HOME/lib/*</value>
     <name>yarn.resourcemanager.max-completed-applications</name>
     <value>10000</value>
   </property>
+  <property>
+    <name>yarn.nodemanager.vmem-pmem-ratio</name>
+    <value>1</value>
+  </property>
 </configuration>

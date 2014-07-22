@@ -63,13 +63,13 @@ export HIVE_HOME=/usr/lib/hive
 export HBASE_HOME=/usr/lib/hbase
 export HADOOP_HDFS_HOME=/usr/lib/hadoop-hdfs
 export HADOOP_MAPRED_HOME=/usr/lib/hadoop-mapreduce
-export HADOOP_COMMON_HOME=${HADOOP_HOME}
+export HADOOP_COMMON_HOME=\${HADOOP_HOME}
 export HADOOP_HDFS_HOME=/usr/lib/hadoop-hdfs
-export HADOOP_LIBEXEC_DIR=${HADOOP_HOME}/libexec
-export HADOOP_CONF_DIR=${HADOOP_HOME}/etc/hadoop
-export HDFS_CONF_DIR=${HADOOP_HOME}/etc/hadoop
+export HADOOP_LIBEXEC_DIR=\${HADOOP_HOME}/libexec
+export HADOOP_CONF_DIR=\${HADOOP_HOME}/etc/hadoop
+export HDFS_CONF_DIR=\${HADOOP_HOME}/etc/hadoop
 export YARN_HOME=/usr/lib/hadoop-yarn
-export YARN_CONF_DIR=${HADOOP_HOME}/etc/hadoop
+export YARN_CONF_DIR=\${HADOOP_HOME}/etc/hadoop
 ">> ~/.bashrc
 
 alternatives --install /usr/bin/java java /usr/java/latest 5
