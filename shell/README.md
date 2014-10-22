@@ -38,7 +38,7 @@ Remember,when the two file's content is the same,it will be a single node cluste
 * Run this script,it will begin to install and deploy a cluster:
 
 ```
-	sh install-and-run.sh
+	sh start-install.sh
 ```
 
 # Uninstall

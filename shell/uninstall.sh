@@ -25,7 +25,7 @@ NODES_FILE="/etc/edh/conf/nodes"
 if [ "$1" == "ALL" ] || [ "$1" == "all" ]; then
 	continue_ask
 	if [ -f $NODES_FILE ]; then
-		pssh -P -i -h $NODES_FILE  "`cat script/remove_node.sh` "
+		pssh -P -i -h $NODES_FILE  "`cat remove_node.sh` "
 	else
 		echo "[ERROR]: Can not found role configuration file $NODES_FILE"
 		exit 1
@@ -34,6 +34,6 @@ else
 	NODES=$*
 	continue_ask
 	
-	pssh -P -i -H $NODES "`cat script/remove_node.sh`" 
+	pssh -P -i -H $NODES "`cat remove_node.sh`" 
 fi
 

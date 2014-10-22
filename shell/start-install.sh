@@ -15,7 +15,6 @@ echo -e "[INFO]:Hostname is $HOSTNAME, Time is `date +'%F %T'`, TimeZone is `dat
 echo -e "\n[INFO]:Install hadoop for all nodes:$NODES_LIST"
 
 \cp -r edh /etc/
-cd script
 
 ALL_HOSTS="`cat $NODES_FILE $MANAGER_FILE  |sort -n | uniq | tr '\n' ' '|  sed 's/,$//'`"
 NODES_ONLY=`grep -vf $MANAGER_FILE $NODES_FILE |sort -n | uniq | tr '\n' ' '|  sed 's/,$//'` #获取去掉manager的所有节点
