@@ -10,10 +10,29 @@
 		<value>14400</value>
 	</property>
 	<property>
+    		<name>fs.trash.checkpoint.interval</name>
+    		<value>10080</value>
+  	</property>
+	<property>
 		<name>io.file.buffer.size</name>
 		<value>65536</value>
 	</property>
-	
+	<property>
+    		<name>io.compression.codecs</name>          
+    		<value>org.apache.hadoop.io.compress.DefaultCodec,org.apache.hadoop.io.compress.GzipCodec,org.apache.hadoop.io.compress.BZip2Codec,com.hadoop.compression.lzo.LzopCodec,org.apache.hadoop.io.compress.SnappyCodec</value>
+  	</property>
+	<property>
+		<name>io.compression.codec.lzo.class</name>
+		<value>com.hadoop.compression.lzo.LzoCodec</value>
+	</property>
+	<property>
+    		<name>hadoop.proxyuser.mapred.hosts</name>
+      		<value>*</value>
+	</property>
+	<property>
+		<name>hadoop.proxyuser.mapred.groups</name>
+		<value>*</value>
+	</property>
 	<property>
 		<name>hadoop.proxyuser.hive.hosts</name>
 		<value>*</value>
@@ -22,13 +41,12 @@
 		<name>hadoop.proxyuser.hive.groups</name>
 		<value>*</value>
 	</property>
-
-  	<property>
-    	<name>io.compression.codecs</name>        ​     
-    	<value>org.apache.hadoop.io.compress.DefaultCodec,org.apache.hadoop.io.compress.GzipCodec,org.apache.hadoop.io.compress.BZip2Codec,com.hadoop.compression.lzo.LzopCodec,org.apache.hadoop.io.compress.SnappyCodec</value>
-  	</property
 	<property>
-		<name>io.compression.codec.lzo.class</name>
-		<value>com.hadoop.compression.lzo.LzoCodec</value>
+		<name>hadoop.proxyuser.httpfs.hosts</name>
+		<value>*</value>
+	</property>
+	<property>
+		<name>hadoop.proxyuser.httpfs.groups</name>
+		<value>*</value>
 	</property>
 </configuration>

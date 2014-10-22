@@ -32,7 +32,7 @@
 	</property>
 	<property>
 		  <name>dfs.datanode.max.xcievers</name>
-		  <value>8192</value>
+		  <value>81920</value>
 	</property>
 	<property>
 		<name>fs.permissions.umask-mode</name>

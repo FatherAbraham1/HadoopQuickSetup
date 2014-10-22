@@ -48,9 +48,9 @@ export HADOOP_HDFS_HOME=/usr/lib/hadoop-hdfs
 export HADOOP_LIBEXEC_DIR=${HADOOP_HOME}/libexec
 export HADOOP_CONF_DIR=${HADOOP_HOME}/etc/hadoop
 export HDFS_CONF_DIR=${HADOOP_HOME}/etc/hadoop
-export YARN_HOME=/usr/lib/hadoop-yarn
+export HADOOP_YARN_HOME=/usr/lib/hadoop-yarn
 export YARN_CONF_DIR=${HADOOP_HOME}/etc/hadoop
-">v~/.bashrc
+">> ~/.bashrc
 
 alternatives --install /usr/bin/java java /usr/java/latest 5
 alternatives --set java /usr/java/latest 
@@ -69,6 +69,7 @@ addline "LogLevel ERROR" ~/.ssh/config
 echo -e "[INFO]: Set Global file limit ..."
 
 sysctl -w vm.swappiness=0 
+echo "echo never > /sys/kernel/mm/redhat_transparent_hugepage/defrag" >/etc/rc.local
 
 rst=`grep "^fs.file-max" /etc/sysctl.conf`
 if [ "x$rst" = "x" ] ; then

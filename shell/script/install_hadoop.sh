@@ -59,10 +59,3 @@ for server in `cat $CONFIG_PATH/zookeepers` ;do
 done
 
 echo "Install hadoop finish ..."
-
-
-
-
-
-
-
