@@ -4,23 +4,23 @@ HOSTNAME=`hostname`
 CONFIG_PATH=/etc/edh/conf
 NODES_FILE=$CONFIG_PATH/nodes
 MANAGER_FILE=$CONFIG_PATH/manager
-TMP_FILE=/tmp/edh_tmp
 
+HOSTS="`cat $NODES_FILE $MANAGER_FILE  |sort -n | uniq | tr '\n' ' '|  sed 's/,$//'`"
 
 echo "[INFO]:Install hadoop rpm on namenode"
 pssh -P -i -h $MANAGER_FILE  "
 	yum install -y hadoop-hdfs-namenode hadoop-hdfs-secondarynamenode hadoop-mapreduce-historyserver hadoop-yarn-resourcemanager hive-metastore
 "
 
+# yum install -y hadoop-hdfs-datanode hadoop-yarn-nodemanager hive-jdbc hive-hbase zookeeper-server hbase-master hbase-regionserver 
+
 echo "[INFO]:Install hadoop rpm on datanode"
 pssh -P -i -h  $NODES_FILE "
-	yum install -y hadoop-hdfs-datanode hadoop-yarn-nodemanager hive-server2 hive-jdbc zookeeper-server hbase-master hbase-regionserver hbase-thrift
+	yum install -y hadoop-hdfs-datanode hadoop-yarn-nodemanager hive-jdbc hive-hbase
 "
 
-cat $MANAGER_FILE $NODES_FILE |uniq>$TMP_FILE
-
 echo "Config hadoop alternatives ..."
-pssh -P -i -h $TMP_FILE '
+pssh -P -i -H "$HOSTS" '
 	rm -rf /data/dfs
 	mkdir -p /data/dfs/{dn,nn,namesecondary} /data/yarn/{local,logs}
 	chown -R hdfs:hdfs /data/dfs && chmod -R 700 /data/dfs/
@@ -43,7 +43,7 @@ pssh -P -i -h $TMP_FILE '
 
 myid=0
 
-for server in `cat $CONFIG_PATH/zookeepers` ;do
+for server in $HOSTS ;do
 	myid=`expr $myid + 1`
 	echo -e "\n[INFO]:init zookeeper in $server ..."
 
@@ -51,7 +51,8 @@ for server in `cat $CONFIG_PATH/zookeepers` ;do
 		service zookeeper-server stop
 		pkill -9 zookeeper-server
 
-		rm -rf /var/lib/zookeeper/* ; mkdir /var/lib/zookeeper
+		rm -rf /var/lib/zookeeper
+		mkdir /var/lib/zookeeper
 		chown -R zookeeper:zookeeper /var/lib/zookeeper && chmod -R 700 /var/lib/zookeeper
 
 		service zookeeper-server init --myid=$myid

@@ -5,17 +5,17 @@
 
 	<property>
 	  	<name>javax.jdo.option.ConnectionURL</name>
-	    	<value>jdbc:postgresql://localhost/metastore</value>
+	    <value>jdbc:postgresql://localhost/metastore</value>
 	</property>
 	     
 	<property>
 	  	<name>javax.jdo.option.ConnectionDriverName</name>
-	    	<value>org.postgresql.Driver</value>
+	    <value>org.postgresql.Driver</value>
 	</property>
 	     
 	<property>
 	  	<name>javax.jdo.option.ConnectionUserName</name>
-	    	<value>hiveuser</value>
+	    <value>hiveuser</value>
 	</property>
 	     
 	<property>
@@ -25,7 +25,7 @@
 	     
 	<property>
 	  	<name>datanucleus.autoCreateSchema</name>
-	    	<value>false</value>
+	    <value>false</value>
 	</property>
 
 	<property>
@@ -44,7 +44,7 @@
 
 	<property>
 	  	<name>hive.metastore.uris</name>
-	    	<value>thrift://localhost:9083</value>
+	    <value>thrift://localhost:9083</value>
 	</property>
 
 	<property>
@@ -58,11 +58,11 @@
 
 	<property>    
 		<name>hive.metastore.cache.pinobjtypes</name>    
-	    	<value>Table,Database,Type,FieldSchema,Order</value>    
+	    <value>Table,Database,Type,FieldSchema,Order</value>    
 	</property>
 
 	<property>
-	  <name>hive.server2.enable.impersonation</name>
-	  <value>true</value>
+		<name>hive.server2.enable.impersonation</name>
+	  	<value>true</value>
 	</property>
 </configuration>

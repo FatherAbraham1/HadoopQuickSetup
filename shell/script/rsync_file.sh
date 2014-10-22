@@ -12,6 +12,8 @@ for srv in hadoop hbase hive zookeeper ; do
 	\cp ${EDH_PATH}/template/${srv}/* /etc/${srv}/conf/
 done
 
+chmod 755 /etc/hadoop/conf/*.sh
+
 echo "[INFO]:replace hadoop conf"
 sed -i "s|localhost|$HOSTNAME|g" /etc/hadoop/conf/core-site.xml
 sed -i "s|localhost|$HOSTNAME|g" /etc/hadoop/conf/hdfs-site.xml
@@ -23,12 +25,11 @@ sed -i "s|localhost|$HOSTNAME|g" /etc/hbase/conf/hbase-site.xml
 #sed -i "s|localhost|$SLAVES|g" /etc/hbase/conf/regionservers
 sed -i "s|zkhost|$ZK_HOSTNAME|g" /etc/hbase/conf/hbase-site.xml
 
-for srv in hadoop hbase hive zookeeper ;do
-	echo "[INFO]:rsync $srv conf"
-	for file in `ls  /etc/${srv}/conf` ;do
-			[ -f $file ] && (pscp -h $NODES_FILE  /etc/${srv}/conf/$file /etc/${srv}/conf)
-	done
-done
+sh /etc/edh/syn.sh /etc/hadoop/conf /etc/hadoop
+sh /etc/edh/syn.sh /etc/hive/conf /etc/hive
+sh /etc/edh/syn.sh /etc/hbase/conf /etc/hbase
+sh /etc/edh/syn.sh /etc/zookeeper/conf /etc/zookeeper
 
-pscp -h $NODES_FILE ${EDH_PATH}/template/postgresql-9.1-901.jdbc4.jar /usr/lib/hive/lib/postgresql-jdbc.jar
+chmod 755 ${EDH_PATH}/template/postgresql-9.1-901.jdbc4.jar
+sh /etc/edh/syn.sh ${EDH_PATH}/template/postgresql-9.1-901.jdbc4.jar /usr/lib/hive/lib/postgresql-jdbc.jar
 

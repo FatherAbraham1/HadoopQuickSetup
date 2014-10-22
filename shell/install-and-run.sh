@@ -1,71 +1,47 @@
 #!/bin/sh
 
+CONFIG_PATH=/etc/edh/conf
+NODES_FILE=$CONFIG_PATH/nodes
+MANAGER_FILE=$CONFIG_PATH/manager
+HOSTNAME=`hostname`
+PASSWORD='redhat'
+
 if [ `id -u` -ne 0 ]; then
    echo "[ERROR]:Must run as root";  exit 1
 fi
 
-CONFIG_PATH=/etc/edh/conf
-NODES_FILE=$CONFIG_PATH/nodes
-MANAGER_FILE=$CONFIG_PATH/manager
-TMP_FILE=/tmp/edh_tmp
-HOSTNAME=`hostname`
-PASSWORD='redhat'
-
 echo -e "\n[INFO]:Install JavaChen(R) Distribution for Apache Hadoop* Software..."
 echo -e "[INFO]:Hostname is $HOSTNAME, Time is `date +'%F %T'`, TimeZone is `date +'%Z %:z'`"
+echo -e "\n[INFO]:Install hadoop for all nodes:$NODES_LIST"
 
-### copy edh ###
 \cp -r edh /etc/
 cd script
 
-echo -e "\n[INFO]:Install hadoop for all nodes:$NODES_LIST"
-
-if [ ! -f $NODES_FILE ]; then
-	echo "[ERROR]:Can not found role configuration file $NODES_FILE"
-	exit 1
-fi
-
-if [ ! -f $MANAGER_FILE ]; then
-	echo "[ERROR]:Can not found manager configuration file $MANAGER_FILE"
-	exit 1
-fi
-
-NODES_LIST="`cat $NODES_FILE`"
-MANAGER_LIST="`cat $MANAGER_FILE`"
-grep -vf $MANAGER_FILE $NODES_FILE >$TMP_FILE #获取去掉manager的所有节点
+ALL_HOSTS="`cat $NODES_FILE $MANAGER_FILE  |sort -n | uniq | tr '\n' ' '|  sed 's/,$//'`"
+NODES_ONLY=`grep -vf $MANAGER_FILE $NODES_FILE |sort -n | uniq | tr '\n' ' '|  sed 's/,$//'` #获取去掉manager的所有节点
 
 sh config.sh
 
 echo "[INFO]:Config ssh nopassword"
-for node in $NODES_LIST ;do
-	./ssh_nopassword.sh $node $PASSWORD
+for node in $ALL_HOSTS ;do
+	./ssh_nopassword.expect $node $PASSWORD
 done	
 
-if [ -s $TMP_FILE ] ;then
-	# sync yum
-	echo "[INFO]:Sync repos"
-	pscp -h $TMP_FILE /etc/yum.repos.d/*.repo /etc/yum.repos.d/
-	# config nodes
-	echo "[INFO]:Config node"
-	
-	#mussh -m -u -b -t 6 -H  $TMP_FILE -C config.sh
-	
-	pssh -P -i -h $TMP_FILE  "`cat config.sh`" 
-	echo "[INFO]:Sync ntp conf"
-	pscp -h $TMP_FILE /etc/localtime /etc/localtime
-	pscp -h $TMP_FILE /etc/sysconfig/clock /etc/sysconfig/clock
-fi
+pscp -H "$ALL_HOSTS" /etc/yum.repos.d/*.repo /etc/yum.repos.d/
+pscp -H "$ALL_HOSTS" /etc/localtime /etc/localtime
+pscp -H "$ALL_HOSTS" /etc/sysconfig/clock /etc/sysconfig/clock
+
+pssh -P -i -H "$NODES_ONLY"  "`cat config.sh`" 
+
 
 ### ntp ###
 echo "[INFO]:Config ntp"
 \cp /etc/edh/template/ntp.conf /etc/ntp.conf
 sed -i "/^driftfile/ s:^driftfile.*:driftfile /var/lib/ntp/ntp.drift:g" /etc/ntp.conf
-
-echo "[INFO]:Start ntp"
 service ntpd start
 
 echo "[INFO]:Synchronizing time and timezone to $HOSTNAME"
-pssh -P -i -h $TMP_FILE '
+pssh -P -i -h $NODES_ONLY '
 	echo "[INFO]:Synchronizing the node'\''s timezone and clock with the management node'\''s time and timezone."
 	echo "[INFO]:Waiting for ['${node}'] to update it clock to the clock on ['$HOSTNAME']..."
 
@@ -105,14 +81,16 @@ sh rsync_file.sh
 
 sh install_postgres.sh
 
-sh ../cluster.sh hive stop
-sh ../cluster.sh hbase stop
-sh ../cluster.sh hadoop stop
+sh /etc/edh/cluster.sh hive stop
+sh /etc/edh/cluster.sh hbase stop
+sh /etc/edh/cluster.sh zookeeper stop
+sh /etc/edh/cluster.sh hadoop stop
 
 sh format_cluster.sh
 
-sh ../cluster.sh hadoop start
-sh ../cluster.sh hbase start
-sh ../cluster.sh hive start
+sh /etc/edh/cluster.sh hadoop start
+sh /etc/edh/cluster.sh zookeeper start
+sh /etc/edh/cluster.sh hbase start
+sh /etc/edh/cluster.sh hive start
 
 echo "[INFO]:Install hadoop on cluster complete!"

@@ -16,6 +16,7 @@ export HADOOP_OPTS="-Djava.net.preferIPv4Stack=true $HADOOP_OPTS"
 
 # The maximum amount of heap to use, in MB. Default is 1000.
 # export HADOOP_HEAPSIZE=2000
+export HADOOP_HEAPSIZE=800
 
 # Extra Java runtime options.  Empty by default.
 # export HADOOP_OPTS=-server
@@ -28,7 +29,7 @@ export HADOOP_BALANCER_OPTS="-Dcom.sun.management.jmxremote $HADOOP_BALANCER_OPT
 export HADOOP_JOBTRACKER_OPTS="-Dcom.sun.management.jmxremote $HADOOP_JOBTRACKER_OPTS"
 # export HADOOP_TASKTRACKER_OPTS=
 # The following applies to multiple commands (fs, dfs, fsck, distcp etc)
-#export HADOOP_CLIENT_OPTS="-Xmx256m $HADOOP_CLIENT_OPTS"
+export HADOOP_CLIENT_OPTS="-Xmx128m $HADOOP_CLIENT_OPTS"
 
 # Extra ssh options.  Empty by default.
 # export HADOOP_SSH_OPTS="-o ConnectTimeout=1 -o SendEnv=HADOOP_CONF_DIR"
@@ -57,5 +58,5 @@ export HADOOP_JOBTRACKER_OPTS="-Dcom.sun.management.jmxremote $HADOOP_JOBTRACKER
 # export HADOOP_NICENESS=10
 
 ## set HADOOP_JOB_HISTORYSERVER_HEAPSIZE by june 20130722
-export HADOOP_JOB_HISTORYSERVER_HEAPSIZE=256
+export HADOOP_JOB_HISTORYSERVER_HEAPSIZE=100
 export HADOOP_MAPRED_HOME=/usr/lib/hadoop-mapreduce
