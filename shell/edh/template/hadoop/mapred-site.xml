@@ -12,11 +12,7 @@
   <property>
     <name>mapreduce.jobhistory.webapp.address</name>
     <value>localhost:19888</value>
-  </property>
-  <property>
-  	<name>yarn.app.mapreduce.am.staging-dir</name>
-   <value>/user</value>
-  </property>  
+  </property> 
   <property>
     <name>mapred.child.java.opts</name>
     <value> -Xmx512m -XX:+UseConcMarkSweepGC -XX:ParallelCMSThreads=1 -XX:ParallelGCThreads=1</value>
@@ -41,6 +37,7 @@
   <property>
     <name>mapreduce.reduce.shuffle.parallelcopies</name>
     <value>10</value>
+    <!-- 一般介于节点数开方和节点数一半之间，小于20节点，则为节点数-->
   </property>
   <property>
     <name>mapreduce.task.io.sort.factor</name>
