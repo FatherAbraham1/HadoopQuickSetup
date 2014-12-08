@@ -19,12 +19,12 @@ DN_FILE=$config_bin/../conf/datanode
 NODES="`cat $NODES_FILE |sort -n | uniq | tr '\n' ' '|  sed 's/,$//'`"
 
 echo "[INFO]:Install hadoop rpms on namenode"
-pssh -P -i -h $NN_FILE "yum install -y hadoop-hdfs-namenode hadoop-hdfs-secondarynamenode \
+pssh -P -i -h $NN_FILE "yum install -y hadoop-debuginfo hadoop-doc hadoop-hdfs-namenode hadoop-hdfs-secondarynamenode \
  		hadoop-mapreduce-historyserver hadoop-yarn-resourcemanager hive-metastore
 "
 
 echo "[INFO]:Install hadoop rpms on datanode"
-pssh -P -i -h  $DN_FILE "yum install -y hadoop-hdfs-datanode hadoop-yarn-nodemanager \
+pssh -P -i -h  $DN_FILE "yum install -y hadoop-debuginfo hadoop-doc hadoop-hdfs-datanode hadoop-yarn-nodemanager \
 	hive-server2 hive-hbase zookeeper-server hbase-master hbase-regionserver
 "
 

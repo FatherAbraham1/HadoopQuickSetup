@@ -30,20 +30,15 @@ sh $config_bin/bin/install_hadoop.sh
 echo ""
 sh $config_bin/bin/postinstall_hadoop.sh
 
-exit
-
 echo ""
 sh $config_bin/bin/install_postgres.sh
-
-
-
 
 sh $config_bin/script/cluster.sh hive stop
 sh $config_bin/script/cluster.sh hbase stop
 sh $config_bin/script/cluster.sh zookeeper stop
 sh $config_bin/script/cluster.sh hadoop stop
 
-sh $config_bin/format_cluster.sh
+sh $config_bin/bin/format_cluster.sh
 
 sh $config_bin/script/cluster.sh hadoop start
 sh $config_bin/script/cluster.sh zookeeper start

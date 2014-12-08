@@ -1,5 +1,18 @@
 #!/bin/bash
 
+# resolve links - $0 may be a softlink
+this="${BASH_SOURCE-$0}"
+common_bin=$(cd -P -- "$(dirname -- "$this")" && pwd -P)
+script="$(basename -- "$this")"
+this="$common_bin/$script"
+
+# convert relative path to absolute path
+config_bin=`dirname "$this"`
+script=`basename "$this"`
+config_bin=`cd "$config_bin"; pwd`
+this="$config_bin/$script"
+
+
 if [ `id -u` -ne 0 ]; then
    echo "must run as root"
    exit 1
@@ -93,4 +106,4 @@ init_hive_metastore metastore hiveuser "/usr/lib/hive/scripts/metastore/upgrade/
 restart_db
 
 chmod 755 $config_bin/../template/postgresql-9.1-901.jdbc4.jar
-sh /opt/shell/syn.sh $config_bin/../template/postgresql-9.1-901.jdbc4.jar /usr/lib/hive/lib/postgresql-jdbc.jar
+sh $config_bin/../script/syn.sh $config_bin/../template/postgresql-9.1-901.jdbc4.jar /usr/lib/hive/lib/postgresql-jdbc.jar

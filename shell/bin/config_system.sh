@@ -54,9 +54,16 @@ for user in hdfs mapred hbase zookeeper hive impala flume $curuser ;do
     addline "$user	hard	nproc	131072" /etc/security/limits.conf
 done
 
+echo -e "[INFO]:Install some rpms ..."
+
+yum install -y jdk hadoop hbase hive zookeeper hadoop-yarn impala rsync expect ntp pssh
+if ! rpm -q jdk hadoop hbase hive zookeeper hadoop-yarn impala rsync expect ntp pssh>/dev/null ; then
+    echo "[ERROR]:Missing libs: jdk hadoop hbase hive zookeeper hadoop-yarn impala rsync expect ntp pssh"
+		exit 1
+fi
 
 echo -e "[INFO]:Config `hostname -f`'s JAVA_HOME ..."
-yum install jdk -y >/dev/null
+
 echo "
  # .bashrc
  # Source global definitions
@@ -84,15 +91,16 @@ export HADOOP_HDFS_HOME=/usr/lib/hadoop-hdfs
 export HADOOP_MAPRED_HOME=/usr/lib/hadoop-mapreduce
 export HADOOP_COMMON_HOME=\${HADOOP_HOME}
 export HADOOP_HDFS_HOME=/usr/lib/hadoop-hdfs
-export HADOOP_LIBEXEC_DIR=${HADOOP_HOME}/libexec
-export HADOOP_CONF_DIR=${HADOOP_HOME}/etc/hadoop
-export HDFS_CONF_DIR=${HADOOP_HOME}/etc/hadoop
+export HADOOP_LIBEXEC_DIR=\${HADOOP_HOME}/libexec
+export HADOOP_CONF_DIR=\${HADOOP_HOME}/etc/hadoop
+export HDFS_CONF_DIR=\${HADOOP_HOME}/etc/hadoop
 export HADOOP_YARN_HOME=/usr/lib/hadoop-yarn
-export YARN_CONF_DIR=${HADOOP_HOME}/etc/hadoop
+export YARN_CONF_DIR=\${HADOOP_HOME}/etc/hadoop
 ">> ~/.bashrc
 
 alternatives --install /usr/bin/java java /usr/java/latest 5
 alternatives --set java /usr/java/latest
+
 source ~/.bashrc
 
 

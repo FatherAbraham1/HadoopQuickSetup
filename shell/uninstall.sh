@@ -1,10 +1,23 @@
 #!/bin/sh
 
+# resolve links - $0 may be a softlink
+this="${BASH_SOURCE-$0}"
+common_bin=$(cd -P -- "$(dirname -- "$this")" && pwd -P)
+script="$(basename -- "$this")"
+this="$common_bin/$script"
+
+# convert relative path to absolute path
+config_bin=`dirname "$this"`
+script=`basename "$this"`
+config_bin=`cd "$config_bin"; pwd`
+this="$config_bin/$script"
+
+
 if [ $# == 0 ]; then
-  echo "USAGE: 
+  echo "USAGE:
   ./uninstall.sh ALL|all
-  ./uninstall.sh node1 node2 node3 ... 
-  "; exit 1; 
+  ./uninstall.sh node1 node2 node3 ...
+  "; exit 1;
 fi
 
 function continue_ask {
@@ -20,8 +33,9 @@ function continue_ask {
 	return 0
 }
 
+sh $config_bin/bin/remove_node.sh
 
-NODES_FILE="/etc/edh/conf/nodes"
+NODES_FILE=$config_bin/conf/nodes
 if [ "$1" == "ALL" ] || [ "$1" == "all" ]; then
 	continue_ask
 	if [ -f $NODES_FILE ]; then
@@ -33,7 +47,6 @@ if [ "$1" == "ALL" ] || [ "$1" == "all" ]; then
 else
 	NODES=$*
 	continue_ask
-	
-	pssh -P -i -H $NODES "`cat remove_node.sh`" 
-fi
 
+	pssh -P -i -H $NODES "`cat remove_node.sh`"
+fi

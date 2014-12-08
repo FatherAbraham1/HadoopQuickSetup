@@ -30,8 +30,8 @@ su -s /bin/bash hdfs -c 'hadoop fs -chmod 755 /'
 
 while read dir user group perm
 do
-   	su -s /bin/bash hdfs -c "hadoop fs -mkdir -p $dir ; hadoop fs -chmod -R $perm $dir ; hadoop fs -chown $user:$group $dir"
-    	echo "[INFO]:mkdir $dir"
+  su -s /bin/bash hdfs -c "hadoop fs -mkdir -p $dir;hadoop fs -chmod -R $perm $dir;hadoop fs -chown $user:$group $dir"
+  echo "[INFO]:mkdir $dir"
 done << EOF
 /tmp hdfs hadoop 1777
 /yarn/apps yarn mapred 1777
@@ -43,5 +43,4 @@ done << EOF
 /user/history/done mapred hadoop 750
 /user/history/done_intermediate mapred hadoop 1777
 /hbase hbase hadoop 755
-
 EOF

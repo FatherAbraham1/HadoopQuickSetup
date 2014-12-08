@@ -22,18 +22,13 @@ echo -e "[INFO]:Config `hostname -f`'s ssh"
 [ ! -d ~/.ssh ] && ( mkdir ~/.ssh ) && ( chmod 600 ~/.ssh )
 [ ! -f ~/.ssh/id_rsa.pub ] && (yes|ssh-keygen -f ~/.ssh/id_rsa -t rsa -N "") && ( chmod 600 ~/.ssh/id_rsa.pub )
 
-yum install -y jdk hadoop hbase hive zookeeper hadoop-yarn impala rsync expect ntp pssh
-if ! rpm -q jdk hadoop hbase hive zookeeper hadoop-yarn impala rsync expect ntp pssh>/dev/null ; then
-    echo "[ERROR]:Missing libs: jdk hadoop hbase hive zookeeper hadoop-yarn impala rsync expect ntp pssh"
-		exit 1
-fi
-
 echo "[INFO]:Config ssh nopassword"
 for node in $NODES ;do
 	$config_bin/ssh_nopassword.expect $node $PASSWORD >/dev/null
 done
 
 pscp -H "$NODES" /etc/yum.repos.d/*.repo /etc/yum.repos.d/
+
 pssh -P -i -H "$NODES"  "`cat $config_bin/config_system.sh`"
 
 $config_bin/config_ntp.sh
