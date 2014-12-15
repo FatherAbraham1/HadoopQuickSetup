@@ -1,37 +1,27 @@
 #!/bin/bash
 
-# resolve links - $0 may be a softlink
-this="${BASH_SOURCE-$0}"
-common_bin=$(cd -P -- "$(dirname -- "$this")" && pwd -P)
-script="$(basename -- "$this")"
-this="$common_bin/$script"
-
-# convert relative path to absolute path
-config_bin=`dirname "$this"`
-script=`basename "$this"`
-config_bin=`cd "$config_bin"; pwd`
-this="$config_bin/$script"
-
+readonly PROGNAME=$(basename $0)
+readonly PROGDIR=$(readlink -m $(dirname $0))
+readonly ARGS="$@"
 
 HOSTNAME=`hostname -f`
-NODES_FILE=$config_bin/../conf/nodes
+NODES_FILE=$PROGDIR/../conf/nodes
 NODES="`cat $NODES_FILE |grep -v $HOSTNAME |sort -n | uniq | tr '\n' ' '|  sed 's/,$//'`"
 
-pscp -H "$NODES" /etc/localtime /etc/localtime
-pscp -H "$NODES" /etc/sysconfig/clock /etc/sysconfig/clock
-
-### ntp ###
-echo "[INFO]:Config `hostname -f`'s ntp"
-\cp $config_bin/../template/ntp.conf /etc/ntp.conf
+echo "[INFO]:Setup ntpd server on $HOSTNAME"
+pscp -H "$NODES" /etc/localtime /etc/localtime >/dev/null 2>&1
+pscp -H "$NODES" /etc/sysconfig/clock /etc/sysconfig/clock >/dev/null 2>&1
+\cp $PROGDIR/../template/ntp.conf /etc/ntp.conf
 sed -i "/^driftfile/ s:^driftfile.*:driftfile /var/lib/ntp/ntp.drift:g" /etc/ntp.conf
-service ntpd start
 
-echo "[INFO]:Synchronizing time and timezone to $HOSTNAME"
-pssh -P -i -H "$NODES" '
-	echo "[INFO]:Waiting for `hostname -f` to update time and timezone to ['$HOSTNAME']..."
+echo "[INFO]:Start ntpd service on $HOSTNAME"
+service ntpd start >/dev/null 2>&1
+
+pssh -i -H "$NODES" '
+	echo "[INFO]:Waiting for [`hostname -f`] to update time and timezone to ['$HOSTNAME']..."
 
 	if service ntpd status >/dev/null 2>&1; then
-		service ntpd stop
+		service ntpd stop >/dev/null 2>&1
 	fi
 
 	waiting_time=30

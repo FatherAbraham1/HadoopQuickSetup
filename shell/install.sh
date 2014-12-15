@@ -1,16 +1,12 @@
 #!/bin/sh
 
-# resolve links - $0 may be a softlink
-this="${BASH_SOURCE-$0}"
-common_bin=$(cd -P -- "$(dirname -- "$this")" && pwd -P)
-script="$(basename -- "$this")"
-this="$common_bin/$script"
+readonly PROGNAME=$(basename $0)
+readonly PROGDIR=$(readlink -m $(dirname $0))
+readonly ARGS="$@"
 
-# convert relative path to absolute path
-config_bin=`dirname "$this"`
-script=`basename "$this"`
-config_bin=`cd "$config_bin"; pwd`
-this="$config_bin/$script"
+if [ `id -u` -ne 0 ]; then
+   echo "[ERROR]:Must run as root";  exit 1
+fi
 
 # Begin
 echo ""
@@ -18,31 +14,21 @@ echo "[INFO]:Install JavaChen(R) Distribution for Apache Hadoop* Software..."
 echo "[INFO]:Manager is `hostname -f`, Time is `date +'%F %T'`, TimeZone is `date +'%Z %:z'`"
 echo ""
 
-if [ `id -u` -ne 0 ]; then
-   echo "[ERROR]:Must run as root";  exit 1
-fi
+sh $PROGDIR/bin/config_cluster.sh
+sh $PROGDIR/bin/install_hadoop.sh
+sh $PROGDIR/bin/config_hadoop.sh
+sh $PROGDIR/bin/install_postgres.sh
 
-sh $config_bin/bin/config_cluster.sh
+sh $PROGDIR/script/cluster.sh hive stop
+sh $PROGDIR/script/cluster.sh hbase stop
+sh $PROGDIR/script/cluster.sh zookeeper stop
+sh $PROGDIR/script/cluster.sh hadoop stop
 
-echo ""
-sh $config_bin/bin/install_hadoop.sh
+sh $PROGDIR/bin/format_hadoop.sh
 
-echo ""
-sh $config_bin/bin/postinstall_hadoop.sh
-
-echo ""
-sh $config_bin/bin/install_postgres.sh
-
-sh $config_bin/script/cluster.sh hive stop
-sh $config_bin/script/cluster.sh hbase stop
-sh $config_bin/script/cluster.sh zookeeper stop
-sh $config_bin/script/cluster.sh hadoop stop
-
-sh $config_bin/bin/format_cluster.sh
-
-sh $config_bin/script/cluster.sh hadoop start
-sh $config_bin/script/cluster.sh zookeeper start
-sh $config_bin/script/cluster.sh hbase start
-sh $config_bin/script/cluster.sh hive start
+sh $PROGDIR/script/cluster.sh hadoop start
+sh $PROGDIR/script/cluster.sh zookeeper start
+sh $PROGDIR/script/cluster.sh hbase start
+sh $PROGDIR/script/cluster.sh hive start
 
 echo "[INFO]:Install hadoop on cluster complete!"

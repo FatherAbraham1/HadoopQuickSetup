@@ -1,21 +1,13 @@
 #!/bin/bash
 
-# resolve links - $0 may be a softlink
-this="${BASH_SOURCE-$0}"
-common_bin=$(cd -P -- "$(dirname -- "$this")" && pwd -P)
-script="$(basename -- "$this")"
-this="$common_bin/$script"
-
-# convert relative path to absolute path
-config_bin=`dirname "$this"`
-script=`basename "$this"`
-config_bin=`cd "$config_bin"; pwd`
-this="$config_bin/$script"
+readonly PROGNAME=$(basename $0)
+readonly PROGDIR=$(readlink -m $(dirname $0))
+readonly ARGS="$@"
 
 
-NN_FILE=$config_bin/../conf/namenode
-DN_FILE=$config_bin/../conf/datanode
-NODES_FILE=$config_bin/../conf/nodes
+NN_FILE=$PROGDIR/../conf/namenode
+DN_FILE=$PROGDIR/../conf/datanode
+NODES_FILE=$PROGDIR/../conf/nodes
 
 if [ ! -f $NODES_FILE ]; then
     echo "ERROR: Can not found role configuration file $NODES_FILE"
@@ -23,6 +15,8 @@ if [ ! -f $NODES_FILE ]; then
 fi
 
 NODES=`cat $NODES_FILE`
+
+echo "run commands on nodes"
 
 for node in $NODES;do
 	echo "----$node----"

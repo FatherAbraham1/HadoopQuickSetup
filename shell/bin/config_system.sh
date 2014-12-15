@@ -9,7 +9,7 @@ function addline {
     fi
 }
 
-echo -e "[INFO]:Config `hostname -f`'s firewalls ..."
+echo -e "[INFO]:Disable firewalls on `hostname -f` ..."
 [ -f /etc/init.d/iptables ] && FIREWALL="iptables"
 [ -f /etc/init.d/SuSEfirewall2_setup ] && FIREWALL="SuSEfirewall2_setup"
 [ -f /etc/init.d/boot.apparmor ] && SELINUX="boot.apparmor"
@@ -25,7 +25,7 @@ elif [ $SELINUX == "boot.apparmor" ]; then
     chkconfig boot.apparmor off > /dev/null 2>&1
 fi
 
-echo -e "[INFO]:Config `hostname -f`'s ssh ..."
+echo -e "[INFO]:Config ssh on `hostname -f` ..."
 [ ! -d ~/.ssh ] && ( mkdir ~/.ssh ) && ( chmod 600 ~/.ssh )
 [ ! -f ~/.ssh/id_rsa.pub ] && (yes|ssh-keygen -f ~/.ssh/id_rsa -t rsa -N "") && ( chmod 600 ~/.ssh/id_rsa.pub )
 
@@ -33,7 +33,7 @@ addline "StrictHostKeyChecking no" ~/.ssh/config
 addline "UserKnownHostsFile /dev/null" ~/.ssh/config
 addline "LogLevel ERROR" ~/.ssh/config
 
-echo -e "[INFO]:Config `hostname -f`'s system params ..."
+echo -e "[INFO]:Config system params on `hostname -f` ..."
 sysctl -w vm.swappiness=0 >/dev/null
 echo "echo never > /sys/kernel/mm/redhat_transparent_hugepage/defrag" >/etc/rc.local
 rst=`grep "^fs.file-max" /etc/sysctl.conf`
@@ -54,15 +54,15 @@ for user in hdfs mapred hbase zookeeper hive impala flume $curuser ;do
     addline "$user	hard	nproc	131072" /etc/security/limits.conf
 done
 
-echo -e "[INFO]:Install some rpms ..."
+echo -e "[INFO]:Install some rpms on `hostname -f` ..."
 
-yum install -y jdk hadoop hbase hive zookeeper hadoop-yarn impala rsync expect ntp pssh
-if ! rpm -q jdk hadoop hbase hive zookeeper hadoop-yarn impala rsync expect ntp pssh>/dev/null ; then
+yum install -y jdk hadoop hbase hive zookeeper hadoop-yarn impala rsync expect ntp pssh > /dev/null 2>&1
+if ! rpm -q jdk hadoop hbase hive zookeeper hadoop-yarn impala rsync expect ntp pssh> /dev/null ; then
     echo "[ERROR]:Missing libs: jdk hadoop hbase hive zookeeper hadoop-yarn impala rsync expect ntp pssh"
 		exit 1
 fi
 
-echo -e "[INFO]:Config `hostname -f`'s JAVA_HOME ..."
+echo -e "[INFO]:Config JAVA_HOME on `hostname -f`  ..."
 
 echo "
  # .bashrc
@@ -102,6 +102,3 @@ alternatives --install /usr/bin/java java /usr/java/latest 5
 alternatives --set java /usr/java/latest
 
 source ~/.bashrc
-
-
-exit 0

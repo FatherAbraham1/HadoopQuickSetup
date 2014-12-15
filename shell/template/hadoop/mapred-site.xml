@@ -14,6 +14,11 @@
     <value>localhost:19888</value>
   </property>
   <property>
+    <name>yarn.app.mapreduce.am.staging-dir</name>
+    <value>/user</value>
+  </property>
+
+  <property>
     <name>mapred.child.java.opts</name>
     <value> -Xmx180m -XX:+UseConcMarkSweepGC -XX:ParallelCMSThreads=1 -XX:ParallelGCThreads=1</value>
   </property>

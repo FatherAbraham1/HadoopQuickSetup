@@ -1,17 +1,8 @@
 #!/bin/sh
 
-# resolve links - $0 may be a softlink
-this="${BASH_SOURCE-$0}"
-common_bin=$(cd -P -- "$(dirname -- "$this")" && pwd -P)
-script="$(basename -- "$this")"
-this="$common_bin/$script"
-
-# convert relative path to absolute path
-config_bin=`dirname "$this"`
-script=`basename "$this"`
-config_bin=`cd "$config_bin"; pwd`
-this="$config_bin/$script"
-
+readonly PROGNAME=$(basename $0)
+readonly PROGDIR=$(readlink -m $(dirname $0))
+readonly ARGS="$@"
 
 if [ $# == 0 ]; then
   echo "USAGE:
@@ -33,13 +24,13 @@ function continue_ask {
 	return 0
 }
 
-sh $config_bin/bin/remove_node.sh
+sh $PROGDIR/bin/remove_node.sh
 
-NODES_FILE=$config_bin/conf/nodes
+NODES_FILE=$PROGDIR/conf/nodes
 if [ "$1" == "ALL" ] || [ "$1" == "all" ]; then
 	continue_ask
 	if [ -f $NODES_FILE ]; then
-		pssh -P -i -h $NODES_FILE  "`cat remove_node.sh` "
+		pssh -i -h $NODES_FILE  "`cat remove_node.sh` "
 	else
 		echo "[ERROR]: Can not found role configuration file $NODES_FILE"
 		exit 1
