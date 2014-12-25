@@ -4,14 +4,9 @@ readonly PROGNAME=$(basename $0)
 readonly PROGDIR=$(readlink -m $(dirname $0))
 readonly ARGS="$@"
 
-NODES_FILE=$PROGDIR/../conf/nodes
-
-if [ ! -f $NODES_FILE ]; then
-    echo "ERROR: Can not found role configuration file $NODES_FILE"
-	exit 1
-fi
-
-NODES=`cat $NODES_FILE`
+NN_FILE=$PROGDIR/../conf/namenode
+DN_FILE=$PROGDIR/../conf/datanode
+ALL="`cat $NN_FILE $DN_FILE |sort -n | uniq | tr '\n' ' '|  sed 's/,$//'`"
 
 role=$1
 command=$2
@@ -29,7 +24,7 @@ if [ X"$role" == X"mapred" ];then
         dir=hadoop
 fi
 
-for node in $NODES ;do
+for node in $ALL ;do
   echo "========$node========"
   ssh $node '
     echo root|kinit root/admin

@@ -5,20 +5,25 @@ readonly PROGDIR=$(readlink -m $(dirname $0))
 readonly ARGS="$@"
 
 HOSTNAME=`hostname -f`
-NODES_FILE=$PROGDIR/../conf/nodes
-NODES="`cat $NODES_FILE |grep -v $HOSTNAME |sort -n | uniq | tr '\n' ' '|  sed 's/,$//'`"
 
-echo "[INFO]:Setup ntpd server on $HOSTNAME"
-pscp -H "$NODES" /etc/localtime /etc/localtime >/dev/null 2>&1
-pscp -H "$NODES" /etc/sysconfig/clock /etc/sysconfig/clock >/dev/null 2>&1
+NN_FILE=$PROGDIR/../conf/namenode
+DN_FILE=$PROGDIR/../conf/datanode
+CLIENTS="`cat $DN_FILE | sort -n | uniq |grep -v $HOSTNAME| tr '\n' ' '|  sed 's/,$//'`"
+
+if [ -s "$CLIENTS" ];then
+	exit
+fi
+
+pscp -H "$CLIENTS" /etc/localtime /etc/localtime >/dev/null 2>&1
+pscp -H "$CLIENTS" /etc/sysconfig/clock /etc/sysconfig/clock >/dev/null 2>&1
 \cp $PROGDIR/../template/ntp.conf /etc/ntp.conf
 sed -i "/^driftfile/ s:^driftfile.*:driftfile /var/lib/ntp/ntp.drift:g" /etc/ntp.conf
 
 echo "[INFO]:Start ntpd service on $HOSTNAME"
-service ntpd start >/dev/null 2>&1
+service ntpd restart >/dev/null 2>&1
 
-pssh -i -H "$NODES" '
-	echo "[INFO]:Waiting for [`hostname -f`] to update time and timezone to ['$HOSTNAME']..."
+pssh -i -H "$CLIENTS" '
+	echo "Waiting for [`hostname -f`] to update time and timezone to ['$HOSTNAME']..."
 
 	if service ntpd status >/dev/null 2>&1; then
 		service ntpd stop >/dev/null 2>&1

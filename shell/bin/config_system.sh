@@ -56,8 +56,8 @@ done
 
 echo -e "[INFO]:Install some rpms on `hostname -f` ..."
 
-yum install -y jdk hadoop hbase hive zookeeper hadoop-yarn impala rsync expect ntp pssh > /dev/null 2>&1
-if ! rpm -q jdk hadoop hbase hive zookeeper hadoop-yarn impala rsync expect ntp pssh> /dev/null ; then
+yum install -y jdk hadoop hbase hive zookeeper hadoop-yarn impala rsync expect ntp pssh
+if ! rpm -q jdk hadoop hbase hive zookeeper hadoop-yarn impala rsync expect ntp pssh ; then
     echo "[ERROR]:Missing libs: jdk hadoop hbase hive zookeeper hadoop-yarn impala rsync expect ntp pssh"
 		exit 1
 fi
@@ -101,4 +101,4 @@ export YARN_CONF_DIR=\${HADOOP_HOME}/etc/hadoop
 alternatives --install /usr/bin/java java /usr/java/latest 5
 alternatives --set java /usr/java/latest
 
-source ~/.bashrc
+source ~/.bash_profile

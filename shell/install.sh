@@ -26,9 +26,9 @@ sh $PROGDIR/script/cluster.sh hadoop stop
 
 sh $PROGDIR/bin/format_hadoop.sh
 
-sh $PROGDIR/script/cluster.sh hadoop start
-sh $PROGDIR/script/cluster.sh zookeeper start
-sh $PROGDIR/script/cluster.sh hbase start
-sh $PROGDIR/script/cluster.sh hive start
+sh $PROGDIR/script/cluster.sh hadoop-hdfs start
+#sh $PROGDIR/script/cluster.sh zookeeper start
+#sh $PROGDIR/script/cluster.sh hbase start
+#sh $PROGDIR/script/cluster.sh hive start
 
 echo "[INFO]:Install hadoop on cluster complete!"

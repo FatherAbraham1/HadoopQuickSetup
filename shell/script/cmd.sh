@@ -7,18 +7,11 @@ readonly ARGS="$@"
 
 NN_FILE=$PROGDIR/../conf/namenode
 DN_FILE=$PROGDIR/../conf/datanode
-NODES_FILE=$PROGDIR/../conf/nodes
-
-if [ ! -f $NODES_FILE ]; then
-    echo "ERROR: Can not found role configuration file $NODES_FILE"
-	exit 1
-fi
-
-NODES=`cat $NODES_FILE`
+ALL="`cat $NN_FILE $DN_FILE |sort -n | uniq | tr '\n' ' '|  sed 's/,$//'`"
 
 echo "run commands on nodes"
 
-for node in $NODES;do
+for node in $ALL;do
 	echo "----$node----"
 	ssh root@$node $1
 done

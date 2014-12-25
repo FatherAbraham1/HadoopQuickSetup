@@ -24,20 +24,16 @@ function continue_ask {
 	return 0
 }
 
-sh $PROGDIR/bin/remove_node.sh
+NN_FILE=$PROGDIR/../conf/namenode
+DN_FILE=$PROGDIR/../conf/datanode
+ALL="`cat $NN_FILE $DN_FILE |sort -n | uniq | tr '\n' ' '|  sed 's/,$//'`"
 
-NODES_FILE=$PROGDIR/conf/nodes
 if [ "$1" == "ALL" ] || [ "$1" == "all" ]; then
 	continue_ask
-	if [ -f $NODES_FILE ]; then
-		pssh -i -h $NODES_FILE  "`cat remove_node.sh` "
-	else
-		echo "[ERROR]: Can not found role configuration file $NODES_FILE"
-		exit 1
-	fi
+	NODES="`cat $NN_FILE $DN_FILE |sort -n | uniq | tr '\n' ' '|  sed 's/,$//'`"
 else
 	NODES=$*
 	continue_ask
-
-	pssh -P -i -H $NODES "`cat remove_node.sh`"
 fi
+
+pssh -i -H $NODES "`cat $PROGDIR/bin/remove_node.sh` "

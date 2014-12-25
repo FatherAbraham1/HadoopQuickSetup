@@ -4,12 +4,12 @@ readonly PROGNAME=$(basename $0)
 readonly PROGDIR=$(readlink -m $(dirname $0))
 readonly ARGS="$@"
 
-NODES_FILE=$PROGDIR/../conf/nodes
 NN_FILE=$PROGDIR/../conf/namenode
 DN_FILE=$PROGDIR/../conf/datanode
+ALL="`cat $NN_FILE $DN_FILE |sort -n | uniq | tr '\n' ' '|  sed 's/,$//'`"
 NN=`cat $NN_FILE |tr '\n' ','|  sed 's/,$//'`
+
 ZK_HOSTNAME=`cat $DN_FILE |tr '\n' ','|  sed 's/,$//'`
-NODES="`cat $NODES_FILE |sort -n | uniq | tr '\n' ' '|  sed 's/,$//'`"
 
 echo "[INFO]:Resolve hadoop conf"
 for srv in hadoop hbase hive zookeeper ; do
@@ -32,7 +32,7 @@ chmod 755 $PROGDIR/../template/postgresql-9.1-901.jdbc4.jar
 sh $PROGDIR/../script/syn.sh $PROGDIR/../template/postgresql-9.1-901.jdbc4.jar /usr/lib/hive/lib/postgresql-jdbc.jar >/dev/null 2>&1
 
 myid=0
-for server in $NODES ;do
+for server in $ALL ;do
 	myid=`expr $myid + 1`
 	echo "[INFO]:Init hadoop data dictionary on $server ..."
 

@@ -4,11 +4,8 @@ readonly PROGNAME=$(basename $0)
 readonly PROGDIR=$(readlink -m $(dirname $0))
 readonly ARGS="$@"
 
-NODES_FILE=$PROGDIR/../conf/nodes
 NN_FILE=$PROGDIR/../conf/namenode
 DN_FILE=$PROGDIR/../conf/datanode
-
-NODES="`cat $NODES_FILE |sort -n | uniq | tr '\n' ' '|  sed 's/,$//'`"
 
 echo "[INFO]:Install hadoop on namenode"
 pssh -P -i -h $NN_FILE "yum install -y hadoop-debuginfo hadoop-hdfs-namenode hadoop-httpfs hadoop-hdfs-secondarynamenode \
@@ -16,6 +13,5 @@ pssh -P -i -h $NN_FILE "yum install -y hadoop-debuginfo hadoop-hdfs-namenode had
 "
 
 echo "[INFO]:Install hadoop on datanode"
-pssh -i -h  $DN_FILE "yum install -y hadoop-debuginfo hadoop-hdfs-datanode hadoop-yarn-nodemanager \
-	hive-server2 hive-hbase zookeeper-server hbase-master hbase-regionserver
+pssh -P -i -h  $DN_FILE "yum install -y hadoop-debuginfo hadoop-hdfs-datanode hadoop-yarn-nodemanager hive-server2 hive-hbase zookeeper-server hbase-master hbase-regionserver
 "
