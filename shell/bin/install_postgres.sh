@@ -97,7 +97,6 @@ CONF_FILE="/var/lib/pgsql/data/postgresql.conf"
 
 check_postgresql_installed
 
-exit
 configure_postgresql_conf
 enable_remote_connections
 create_db metastore hiveuser redhat >/dev/null  2>&1

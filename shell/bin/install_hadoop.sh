@@ -8,7 +8,7 @@ NN_FILE=$PROGDIR/../conf/namenode
 DN_FILE=$PROGDIR/../conf/datanode
 
 echo "[INFO]:Install hadoop on namenode"
-pssh -P -i -h $NN_FILE "yum install -y hadoop-debuginfo hadoop-hdfs-namenode hadoop-httpfs hadoop-hdfs-secondarynamenode \
+pssh -P -i -h $NN_FILE "yum install -y hadoop-debuginfo hadoop-hdfs-namenode hadoop-hdfs-secondarynamenode \
  		hadoop-mapreduce-historyserver hadoop-yarn-resourcemanager hive-metastore
 "
 
