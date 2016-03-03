@@ -3,6 +3,8 @@ hadoop-install
 
 在 CentOs 机器上快速安装 CDH 集群的 shell 脚本，本脚本目前实现的是在一个管理节点上安装 NameNode、ResourceManager 等组件，其他节点上安装 DataNode、NodeManager 等组件，尚未实现更加细粒度定制每个节点安装的组件。
 
+更多信息参考http://blog.javachen.com/2013/08/02/hadoop-install-script.html
+
 # Overview
 
 目录结构如下：
